@@ -24,7 +24,6 @@ public class Video {
     private String url;
     private String thumbnailUrl;
     private String description;
-    private int videoDuration;
 
     public Long getId(){
         return id;
@@ -61,12 +60,6 @@ public class Video {
     }
     public void setDescription(String newDescription){
         this.description = newDescription;
-    }
-    public int getVideoDuration(){
-        return videoDuration;
-    }
-    public void setVideoDuration(int newVideoDuration){
-        this.videoDuration = newVideoDuration;
     }
     public AppUser getAuthor(){
         return author;

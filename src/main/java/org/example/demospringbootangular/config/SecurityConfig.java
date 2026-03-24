@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/api/users/**").permitAll()
+                        .requestMatchers("/login","/api/users/**","/videoFolder/**","/api/video/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
