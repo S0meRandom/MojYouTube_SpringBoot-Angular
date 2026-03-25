@@ -1,6 +1,7 @@
 package org.example.demospringbootangular.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -24,6 +25,14 @@ public class Video {
     private String url;
     private String thumbnailUrl;
     private String description;
+    @ColumnDefault("0")
+    private long views = 0;
+
+    @ColumnDefault("0")
+    private long likes = 0;
+
+    @ColumnDefault("0")
+    private long dislikes = 0;
 
     public Long getId(){
         return id;
@@ -66,5 +75,23 @@ public class Video {
     }
     public void setAuthor(AppUser newAuthor){
         this.author = newAuthor;
+    }
+    public long getLikes(){
+        return likes;
+    }
+    public void setLikes(Long newLikes){
+        this.likes = newLikes;
+    }
+    public Long getDislikes(){
+        return dislikes;
+    }
+    public void setDislikes(Long newDislikes){
+        this.dislikes = newDislikes;
+    }
+    public Long getViews(){
+        return views;
+    }
+    public void setViews(Long newViews){
+        this.views = newViews;
     }
 }

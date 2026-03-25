@@ -1,14 +1,15 @@
 package org.example.demospringbootangular.controller;
 
+import jakarta.annotation.Resource;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Video;
 import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -87,6 +89,31 @@ public class VideoController {
                 throw new RuntimeException();
             }
         }
+
+
+        @GetMapping
+        public List<Video> getAllVideos(){
+            return videoRepository.findAll();
+        }
+        @GetMapping("/thumbnail/{id}")
+        public ResponseEntity<?> getVideoThumbnail(@PathVariable Long videoId){
+            Video video = videoRepository.findByid(videoId).orElseThrow();
+
+            try{
+                Path path = Paths.get(video.getThumbnailUrl());
+                UrlResource file = new UrlResource(path.toUri());
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(file);
+
+            }catch(Exception e){
+                return ResponseEntity.notFound().build();
+
+            }
+
+        }
+
 }
 
 
