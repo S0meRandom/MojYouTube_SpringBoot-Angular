@@ -38,6 +38,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null,userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }else{
+                System.out.println("DEBUG: Token istnieje,ale jest nieważny");
             }
 
         }catch(Exception e ) {

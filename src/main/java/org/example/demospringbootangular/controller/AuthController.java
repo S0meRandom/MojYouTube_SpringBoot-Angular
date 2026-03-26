@@ -1,10 +1,6 @@
 package org.example.demospringbootangular.controller;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Response;
 import org.example.demospringbootangular.JWT.JwtUtil;
-import org.example.demospringbootangular.JWT.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;

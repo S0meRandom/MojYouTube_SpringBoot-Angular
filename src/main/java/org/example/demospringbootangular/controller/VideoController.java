@@ -30,7 +30,7 @@ public class VideoController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping
+    @PostMapping("/upload")
     public Video saveVideo(@RequestParam("videoFile") MultipartFile videoFile,
                            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
                            @RequestParam("title") String title,
@@ -82,8 +82,8 @@ public class VideoController {
                 Path filePath_thumbnail = childPath.resolve(uniqueFilename_thumbnail);
                 Files.copy(videoFile.getInputStream(),filePath_video,StandardCopyOption.REPLACE_EXISTING);
                 Files.copy(thumbnailFile.getInputStream(), filePath_thumbnail, StandardCopyOption.REPLACE_EXISTING);
-                video.setUrl("/videoFolder/"+folderName+"/"+uniqueFilename_video);
-                video.setThumbnailUrl("/videoFolder/"+folderName+"/"+uniqueFilename_thumbnail);
+                video.setUrl("videoFolder/"+folderName+"/"+uniqueFilename_video);
+                video.setThumbnailUrl("videoFolder/"+folderName+"/"+uniqueFilename_thumbnail);
 
             }catch(IOException io){
                 throw new RuntimeException();
@@ -95,18 +95,29 @@ public class VideoController {
         public List<Video> getAllVideos(){
             return videoRepository.findAll();
         }
+
+
+
         @GetMapping("/thumbnail/{id}")
-        public ResponseEntity<?> getVideoThumbnail(@PathVariable Long videoId){
-            Video video = videoRepository.findByid(videoId).orElseThrow();
+        public ResponseEntity<?> getVideoThumbnail(@PathVariable Long id){
+            Video video = videoRepository.findByid(id).orElseThrow();
 
             try{
-                Path path = Paths.get(video.getThumbnailUrl());
+                String cleanPath = video.getThumbnailUrl();
+                if (cleanPath.startsWith("/")) {
+                    cleanPath = cleanPath.substring(1);
+                }
+                Path path = Paths.get("").toAbsolutePath().resolve(cleanPath);
                 UrlResource file = new UrlResource(path.toUri());
 
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG)
-                        .body(file);
-
+                if (file.exists() && file.isReadable()) {
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(file);
+                } else {
+                    System.out.println("BŁĄD: Plik nie istnieje pod ścieżką: " + path.toAbsolutePath());
+                    return ResponseEntity.notFound().build();
+                }
             }catch(Exception e){
                 return ResponseEntity.notFound().build();
 

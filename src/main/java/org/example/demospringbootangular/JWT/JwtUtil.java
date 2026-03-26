@@ -1,10 +1,12 @@
 package org.example.demospringbootangular.JWT;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,10 @@ public class JwtUtil {
     @Value("${app.jwt.secret}")
     private String secretKey;
 
+    private java.security.Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
+
     @Value("${app.jwt.expirationMs}")
     private int expirationTime;
 
@@ -23,21 +29,32 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + expirationTime))
+                .setExpiration(new Date((new Date()).getTime() + 86400000))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
-    public String getUsernameFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build()
-                .parseClaimsJws(token).getBody().getSubject();
+    public String getUsernameFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
-    public boolean validateJwtToken(String token){
-        try{
-            Jwts.parserBuilder().setSigningKey(token.getBytes()).build().parseClaimsJws(token);
+    public boolean validateJwtToken(String authToken) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(authToken);
             return true;
-
-        }catch(Exception e){
-            return false;
+        } catch (SignatureException e) {
+            System.out.println("BŁĄD: Nieprawidłowy podpis JWT");
+        } catch (ExpiredJwtException e) {
+            System.out.println("BŁĄD: Token wygasł");
+        } catch (Exception e) {
+            System.out.println("BŁĄD: Token jest uszkodzony: " + e.getMessage());
         }
+        return false;
     }
 }
