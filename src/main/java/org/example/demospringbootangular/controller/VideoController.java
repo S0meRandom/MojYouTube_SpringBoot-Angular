@@ -1,18 +1,23 @@
 package org.example.demospringbootangular.controller;
 
 import jakarta.annotation.Resource;
+import org.apache.coyote.Response;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Video;
 import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -124,6 +129,57 @@ public class VideoController {
             }
 
         }
+        @GetMapping("/videoPlay/{id}")
+        public ResponseEntity<StreamingResponseBody> getVideoPlay(@PathVariable Long id, @RequestHeader HttpHeaders headers){
+            Video video = videoRepository.findByid(id).orElseThrow();
+
+            try{
+
+                String cleanPath = video.getUrl();
+                if (cleanPath.startsWith("/")) {
+                    cleanPath = cleanPath.substring(1);
+                }
+                Path path = Paths.get("").toAbsolutePath().resolve(cleanPath);
+                File file = path.toFile();
+
+                StreamingResponseBody responseBody = outputStream -> {
+                    try(InputStream inputStream = new FileInputStream(file)){
+                        byte[] buffer = new byte[8192];
+                        int bytesRead;
+                        while((bytesRead=inputStream.read(buffer)) != -1){
+                            outputStream.write(buffer,0,bytesRead);
+                        }
+                        outputStream.flush();
+                    }
+                };
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename=\""+file.getName()+"\"")
+                        .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()))
+                        .contentType(MediaType.parseMediaType("video/mp4"))
+                        .body(responseBody);
+
+
+            }catch(Exception e){
+                return ResponseEntity.internalServerError().build();
+
+            }
+
+
+
+        }
+    private ResourceRegion resourceRegion(UrlResource video, HttpHeaders headers) throws Exception {
+        long contentLength = video.contentLength();
+        HttpRange range = headers.getRange().isEmpty() ? null : headers.getRange().get(0);
+        if (range != null) {
+            long start = range.getRangeStart(contentLength);
+            long end = range.getRangeEnd(contentLength);
+            long rangeLength = Math.min(1024 * 1024, end - start + 1);
+            return new ResourceRegion(video, start, rangeLength);
+        } else {
+            long rangeLength = Math.min(1024 * 1024, contentLength);
+            return new ResourceRegion(video, 0, rangeLength);
+        }
+    }
 
 }
 

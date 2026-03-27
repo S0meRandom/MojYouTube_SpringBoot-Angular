@@ -44,12 +44,12 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/video/upload").authenticated()
-                        .requestMatchers("/login","/api/users/**","/videoFolder/**","/api/video/**","/api/auth/**").permitAll()
+                        .requestMatchers("/login","/api/users/**","/videoFolder/**","/api/video/**","/api/auth/**","/api/channel/**").permitAll()
                         .anyRequest().authenticated()
+
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
@@ -65,6 +65,7 @@ public class SecurityConfig {
         corsConfig.setAllowedOrigins(List.of("http://localhost:4200"));
         corsConfig.setAllowedMethods(List.of("POST","GET","PUT","DELETE","OPTIONS"));
         corsConfig.setAllowedHeaders(List.of("*"));
+        corsConfig.setExposedHeaders(List.of("*"));
         corsConfig.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

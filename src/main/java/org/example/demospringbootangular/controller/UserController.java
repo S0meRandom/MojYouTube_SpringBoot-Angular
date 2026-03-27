@@ -1,6 +1,10 @@
 package org.example.demospringbootangular.controller;
 
+import jakarta.transaction.Transactional;
 import org.example.demospringbootangular.model.AppUser;
+import org.example.demospringbootangular.model.Channel;
+import org.example.demospringbootangular.model.RegistrationDTO;
+import org.example.demospringbootangular.repository.ChannelRepository;
 import org.example.demospringbootangular.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +20,27 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ChannelRepository channelRepository;
+
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody AppUser user){
-        if(userRepository.findByUsername(user.getUsername()).isPresent()){
-            return ResponseEntity.badRequest().body("Użytkownik już istnieje");
+    @Transactional
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationDTO dto){
 
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        AppUser user = new AppUser();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(user);
-        return ResponseEntity.ok("Zarejestrowano pomyślnie");
+
+        Channel channel = new Channel();
+        channel.setName(dto.getChannelName());
+        channel.setOwner(user);
+        channelRepository.save(channel);
+
+        return ResponseEntity.ok().build();
 
     }
     @GetMapping("/me")

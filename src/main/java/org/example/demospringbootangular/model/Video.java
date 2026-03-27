@@ -19,6 +19,10 @@ public class Video {
     @JoinColumn(name="author_id")
     private AppUser author;
 
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
+
 
     private LocalDateTime creationDate;
     private String title;
@@ -33,6 +37,14 @@ public class Video {
 
     @ColumnDefault("0")
     private long dislikes = 0;
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
 
     public Long getId(){
         return id;
