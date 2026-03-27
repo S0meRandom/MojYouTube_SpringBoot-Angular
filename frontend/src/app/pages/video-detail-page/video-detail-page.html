@@ -1,0 +1,28 @@
+
+<app-header></app-header>
+<body>
+<div id="content">
+  <aside class="sidebar">
+    <div class="sidebarContainer">
+      <div *ngFor="let video of videos" class="video-card">
+        <div class="thumbnailContainer">
+          <img [src]="getSafeThumbnailUrl(video.id)" alt="miniaturka">
+        </div>
+        <div class="video-info">
+          <h3>{{video.title}}</h3>
+          <p>{{video.views || 0}} wyświetleń </p>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+  <div id="video-info">
+  <div class="video-container">
+    <video
+    controls width="50%" crossorigin="use-credentials" [src]="videoUrl">
+    </video>
+  </div>
+  </div>
+
+</div>
+</body>

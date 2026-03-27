@@ -1,0 +1,123 @@
+body{
+  font-family: 'Segoe UI', system-ui,sans-serif;
+  background-color: #f1f5f9;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color:#1e293b;
+}
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 20px;
+}
+
+.register-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 371px;
+}
+
+h2 {
+  text-align: center;
+  color: yellowgreen;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
+
+p {
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1.5rem 0;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.reg-btn {
+  width: 100%;
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reg-btn:hover {
+  background-color: forestgreen;
+}
+
+.footer-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.footer-link a {
+  color: darkgreen;
+  text-decoration: none;
+  font-weight: 600;
+
+}
+
+.footer-link a:hover {
+  text-decoration: underline;
+}

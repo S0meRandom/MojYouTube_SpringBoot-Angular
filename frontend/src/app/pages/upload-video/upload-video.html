@@ -1,0 +1,34 @@
+<body>
+<app-header></app-header>
+<div id="form-container">
+
+  <form ngForm id="upload-form">
+    <div id="form-header">
+      <h2>Przesyłanie Filmu</h2>
+    </div>
+    <div id="msg" *ngIf = "uploadError">
+      <label>Wystąpił błąd w trakcie przesyłania pliku</label>
+    </div>
+    <div id="title">
+      <label>Tytuł filmu</label>
+      <input type="text" name="title" id="title" [(ngModel)]="videoData.title" required>
+    </div>
+    <div id="description">
+      <label>Opis Filmu</label>
+      <textarea name="description" id="description" [(ngModel)]="videoData.description" required></textarea>
+    </div>
+    <div id="videoFile">
+      <label>Plik wideo</label>
+      <input type="file" id="file" accept="video/*" (change)="onVideoSelected($event)"required>
+    </div>
+    <div id="thumbnailFile">
+      <label>Miniaturka filmu</label>
+      <input type="file" id="file" accept="image/*" (change)="onThumbnailSelected($event)" required>
+    </div>
+    <div id="buttonDiv">
+      <button (click)="uploadVideo()" class="upload-btn">Opublikuj film</button>
+    </div>
+  </form>
+</div>
+
+</body>

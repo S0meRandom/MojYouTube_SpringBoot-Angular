@@ -1,0 +1,38 @@
+<body>
+<div class="register-container">
+  <div class="register-card">
+    <h2>Stwórz konto</h2>
+    <p>Dołącz do nas i korzystaj z pełni możliwości</p>
+
+    <form (ngSubmit)="Register()">
+      <div class="row">
+        <div class="form-group">
+          <label>Nazwa Użytkownika</label>
+          <input type="text" required name="username"[(ngModel)]="userData.username">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label>Nazwa Kanału</label>
+          <input type="text" required name="channelName"[(ngModel)]="userData.channelName">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email"placeholder="przyklad@email.com" required [(ngModel)]="userData.email">
+      </div>
+
+      <div class="form-group">
+        <label>Hasło</label>
+        <input type="password" name="password"placeholder="Min. 8 znaków" required [(ngModel)]="userData.password">
+      </div>
+      <button type="submit" class="reg-btn">Zarejestruj się</button>
+
+      <div class="footer-link">
+        Masz już konto? <a href="/login">Zaloguj się</a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>

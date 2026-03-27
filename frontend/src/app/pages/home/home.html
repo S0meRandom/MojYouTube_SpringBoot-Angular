@@ -1,0 +1,64 @@
+<body>
+<header>
+  <div id="header">
+    <div id="headerLeft">
+      <div id="logo">
+        <h1>MójYouTube</h1>
+      </div>
+    </div>
+    <div id="headerRight">
+      <button id="profil-btn" (click)="goChannelPage()">Mój Kanał</button>
+      <button id="uploadVideo-btn" (click)="goUploadVideo()">Dodaj film</button>
+    </div>
+  </div>
+</header>
+<div class="container">
+  <aside class="sidebar">
+    <nav>
+      <div class="sidebar-section">
+        <div class="sidebar-item">
+          <label>Subskrypcje</label>
+        </div>
+        <div class="sidebar-item">
+          <label>Polubione Filmy</label>
+        </div>
+      </div>
+
+      <hr class="sidebar-divider">
+
+      <div class="sidebar-section">
+        <div class="section-header">Ty <span>&rsaquo;</span></div>
+        <div class="sidebar-item">
+          <label>Twoje filmy</label>
+        </div>
+        <div class="sidebar-item">
+          <label>Historia</label>
+        </div>
+        <div class="sidebar-item">
+          <label>Do obejrzenia</label>
+        </div>
+        <div class="sidebar-item">
+          <label>Polubione filmy</label>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="videoContainer">
+    <main class="content">
+      <div #videoContainer class="video-grid">
+        <div *ngFor="let video of videos" class="video-card" (click)="goVideoDetail(video.id)">
+          <div class="thumbnail-container">
+            <img [src]="getSafeThumbnailUrl(video.id)" alt="thumb">
+          </div>
+          <div class="video-info">
+            <h3>{{ video.title }}</h3>
+            <p>{{ video.views || 0 }} wyświetleń</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+</body>
