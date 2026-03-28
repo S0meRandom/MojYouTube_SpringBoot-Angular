@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.util.Collections;
+import java.util.List;
+
 @Entity
 @Table(name="channels")
 public class Channel {
@@ -18,6 +21,8 @@ public class Channel {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private AppUser owner;
+
+    private String description;
 
     private String country = "notSpecified";
 
@@ -64,4 +69,11 @@ public class Channel {
     public void setSumViews(Long newSumViews){
         this.sumViews = newSumViews;
     }
+    public String getDescription(){
+        return description;
+    }
+    public void setDescription(String newDescription){
+        this.description = newDescription;
+    }
+
 }

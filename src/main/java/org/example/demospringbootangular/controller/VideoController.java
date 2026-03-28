@@ -3,7 +3,9 @@ package org.example.demospringbootangular.controller;
 import jakarta.annotation.Resource;
 import org.apache.coyote.Response;
 import org.example.demospringbootangular.model.AppUser;
+import org.example.demospringbootangular.model.Channel;
 import org.example.demospringbootangular.model.Video;
+import org.example.demospringbootangular.repository.ChannelRepository;
 import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,16 @@ public class VideoController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ChannelRepository channelRepository;
+
     @PostMapping("/upload")
     public Video saveVideo(@RequestParam("videoFile") MultipartFile videoFile,
                            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
                            @RequestParam("title") String title,
                            @RequestParam("description") String description,Principal principal){
         AppUser currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
+        Channel channel = channelRepository.findByowner(currentUser).orElseThrow();
 
         Video video = new Video();
         video.setTitle(title);
@@ -48,6 +54,7 @@ public class VideoController {
         video.setAuthor(currentUser);
         video.setCreationDate(LocalDateTime.now());
         video.setDescription(description);
+        video.setChannel(channel);
         return videoRepository.save(video);
     }
     public void handleVideo_Thumbnail(MultipartFile videoFile,MultipartFile thumbnailFile, Video video){

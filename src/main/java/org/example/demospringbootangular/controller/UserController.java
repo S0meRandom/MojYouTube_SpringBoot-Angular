@@ -49,7 +49,7 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
         AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
-        System.out.println("Odebrano użytkownika: " + user.getUsername());
         return ResponseEntity.ok(user);
     }
+
 }
