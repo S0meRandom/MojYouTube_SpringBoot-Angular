@@ -13,7 +13,7 @@ export const routes: Routes = [
   {path: 'register', component: Register},
   {path: 'upload-video', component: UploadVideo},
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  {path: 'channelPage',component: ChannelPage},
+  {path: 'channelPage/:id',component: ChannelPage},
   {path: 'videoDetailPage/:id',component: VideoDetailPage}
 
 ];

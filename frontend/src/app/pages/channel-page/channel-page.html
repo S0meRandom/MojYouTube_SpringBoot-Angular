@@ -1,1 +1,30 @@
 <app-header></app-header>
+
+<main class="container" >
+  <section class="profile-section">
+    <div class="profile-info">
+      <h1>{{channelData.name}}</h1>
+      <p class="stats"><span>{{channelData.subscribers}} Subskrybentów</span><span> 15 filmów</span></p>
+      <p class="description">{{channelData.description}}</p>
+      <button class="sub-button" (click)="subscribe()">Subskrybuj</button>
+    </div>
+  </section>
+
+  <nav class="channel-nav">
+    <a href="#" class="active">Strona główna</a>
+    <a href="#">Wideo</a>
+    <a href="#">Informacje</a>
+  </nav>
+
+  <section class="video-grid">
+    <div class="video-card" *ngFor="let video of channelVideos">
+      <div class="thumbnail"></div>
+      <div class="video-details">
+        <h3>{{ video.title }}</h3>
+        <p>{{ video.views }}</p>
+      </div>
+    </div>
+
+  </section>
+</main>
+
