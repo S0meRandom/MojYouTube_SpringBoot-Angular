@@ -92,7 +92,7 @@ header {
 .sidebar-item:hover {
   background-color: #f2f2f2;
 }
-sidebar-item label {
+.sidebar-item label {
   cursor: pointer;
   font-size: 14px;
   color: #0f0f0f;
@@ -133,6 +133,11 @@ sidebar-item label {
 .video-info{
   text-align: center;
 
+}
+.video-info p{
+  text-align: left;
+  margin-left: 5px;
+  margin-bottom: 5px;
 }
 
 .video-card img {

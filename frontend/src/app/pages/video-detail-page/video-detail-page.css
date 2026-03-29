@@ -41,7 +41,15 @@
   flex: 1;
   min-width: 0;
 }
-.video-container video{
+.video-title{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1px;
+
+
+}
+.video-container video {
   max-width: 100%;
   max-height: 80vh;
   background: black;
@@ -49,4 +57,78 @@
   margin-left: 100px;
   margin-top: 50px;
 }
+.channelMeta{
+  display:flex;
+  gap: 10px;
+}
+.channelInfo{
+  display: flex;
+  flex-direction: column;
 
+}
+.channelInfo p,.channelInfo h3 {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+
+}
+.channelMeta button {
+
+  background-color: darkorange;
+  color:white;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  height: 36px;
+  width: 101px;
+  margin-top: 3px;
+
+}
+.video-actions {
+  display: flex;
+  align-items: center;
+}
+
+.like-dislike-container {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  height: 36px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: white;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.action-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+.active-like {
+  color: #3ea6ff;
+}
+
+.active-dislike {
+  color: #ff4e4e;
+}

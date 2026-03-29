@@ -3,6 +3,7 @@ import {Header} from '../../components/header/header';
 import {ActivatedRoute, Router} from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-channel-page',
@@ -17,12 +18,16 @@ export class ChannelPage implements OnInit{
   channelData: any = null;
   channelVideos: any[] = [];
 
-  constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef) {}
+  constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
+              private sanitizer: DomSanitizer,private router: Router) {}
 
   ngOnInit(){
       this.userId = this.route.snapshot.paramMap.get('id');
       this.getChannelData(this.userId);
+  }
 
+  getSafeThumbnailUrl(id: number): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
   }
 
   async getChannelData(id: string | null){
@@ -31,7 +36,7 @@ export class ChannelPage implements OnInit{
     });
     if(response.ok){
       this.channelData = await response.json();
-      await this.getChannelVideos(this.channelData.id);
+      this.getChannelVideos(this.channelData.id);
       this.cdr.detectChanges();
     }else{
       alert("Problem z pobraniem danych kanału");
@@ -67,6 +72,9 @@ export class ChannelPage implements OnInit{
       alert("Błąd w trakcie ładowania filmików")
     }
 
+  }
+  goVideoDetail(videoId: number){
+    this.router.navigate(['/videoDetailPage',videoId]);
   }
 
 }

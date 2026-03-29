@@ -4,7 +4,7 @@
 <div id="content">
   <aside class="sidebar">
     <div class="sidebarContainer">
-      <div *ngFor="let video of videos" class="video-card">
+      <div *ngFor="let video of sidebarVideos" class="video-card">
         <div class="thumbnailContainer">
           <img [src]="getSafeThumbnailUrl(video.id)" alt="miniaturka">
         </div>
@@ -22,6 +22,37 @@
     controls width="50%" crossorigin="use-credentials" [src]="videoUrl">
     </video>
   </div>
+    <div id="video-meta">
+      <div class="video-title">
+      <h1>{{this.videoData.title}}</h1>
+      </div>
+      <div class="channelMeta">
+        <div class="channelInfo">
+          <h3>{{this.videoData.channel.name}}</h3>
+          <p>{{this.videoData.channel.subscribers}} Subskrybentów</p>
+        </div>
+        <button class="sub-button" (click)="subscribe()">Subskrybuj</button>
+        <div class="video-actions">
+          <div class="like-dislike-container">
+            <button class="action-btn like-btn"
+                    [class.active-like]="userReaction === 'LIKE'"
+                    (click)="handleReaction(videoData.id, 'LIKE')">
+              <span class="icon">👍</span>
+              <span class="count">{{videoData?.likesCount || 0}}</span>
+            </button>
+
+            <div class="divider"></div>
+
+            <button class="action-btn dislike-btn"
+                    [class.active-dislike]="userReaction === 'DISLIKE'"
+                    (click)="handleReaction(videoData.id, 'DISLIKE')">
+              <span class="icon">👎</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 
 </div>

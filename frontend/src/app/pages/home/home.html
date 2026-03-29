@@ -52,8 +52,9 @@
             <img [src]="getSafeThumbnailUrl(video.id)" alt="thumb">
           </div>
           <div class="video-info">
-            <h3>{{ video.title }}</h3>
-            <p>{{ video.views || 0 }} wyświetleń</p>
+            <h3>{{video?.title || 'Brak tytułu'}}</h3>
+            <p>{{video?.channel?.name || 'Brak nazwy kanału'}}</p>
+            <p>{{ video?.views || 0 }} wyświetleń</p>
           </div>
         </div>
 
