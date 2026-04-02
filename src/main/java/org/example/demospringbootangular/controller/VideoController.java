@@ -56,7 +56,7 @@ public class VideoController {
 
         Video video = new Video();
         video.setTitle(title);
-        handleVideo_Thumbnail(videoFile,thumbnailFile, video);
+        videoService.handleVideo_Thumbnail(videoFile,thumbnailFile, video);
         video.setAuthor(currentUser);
         video.setCreationDate(LocalDateTime.now());
         video.setDescription(description);
@@ -143,62 +143,15 @@ public class VideoController {
             return ResponseEntity.ok().build();
         }
 
-        @PostMapping("/{id}/react")
+        @PostMapping("/react/{id}")
         public ResponseEntity<?> handleReaction(@PathVariable long id,
                                                 @RequestParam ReactionType type,
-                                                @AuthenticationPrincipal AppUser user){
+                                                Principal principal){
+            AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
             videoService.setReaction(id,user,type);
             return ResponseEntity.ok().build();
 
         }
-
-    public void handleVideo_Thumbnail(MultipartFile videoFile,MultipartFile thumbnailFile, Video video){
-        if (videoFile == null || videoFile.isEmpty() || thumbnailFile == null || thumbnailFile.isEmpty()) {
-            throw new RuntimeException("Brakuje pliku wideo lub miniaturki!");
-        }
-        try{
-            String folderName = video.getTitle()
-                    .strip()
-                    .toLowerCase()
-                    .replaceAll("[^a-z0-9]", "-")
-                    .replaceAll("-+", "-")
-                    + "-" + UUID.randomUUID().toString().substring(0, 8);
-            String directoryPath = "videoFolder";
-            Path uploadPath = Paths.get(directoryPath);
-            Path childPath = uploadPath.resolve(folderName);
-
-            if(!Files.exists(childPath)){
-                Files.createDirectories(childPath);
-            }
-            String originalFileName_video = videoFile.getOriginalFilename();
-            String originalFileName_thumbnail = thumbnailFile.getOriginalFilename();
-
-            String fileExtensionVideo = "";
-            String fileExtensionThumbnail = "";
-
-            assert originalFileName_thumbnail != null;
-            fileExtensionThumbnail = originalFileName_thumbnail.substring(originalFileName_thumbnail.lastIndexOf("."));
-
-
-            if(originalFileName_video != null && originalFileName_video.contains(".")){
-                fileExtensionVideo = originalFileName_video.substring(originalFileName_video.lastIndexOf("."));
-            }
-            String uniqueFilename_thumbnail = UUID.randomUUID().toString()+fileExtensionThumbnail;
-            String uniqueFilename_video = UUID.randomUUID().toString() + fileExtensionVideo;
-            Path filePath_video = childPath.resolve(uniqueFilename_video);
-            Path filePath_thumbnail = childPath.resolve(uniqueFilename_thumbnail);
-            Files.copy(videoFile.getInputStream(),filePath_video,StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(thumbnailFile.getInputStream(), filePath_thumbnail, StandardCopyOption.REPLACE_EXISTING);
-            video.setUrl("videoFolder/"+folderName+"/"+uniqueFilename_video);
-            video.setThumbnailUrl("videoFolder/"+folderName+"/"+uniqueFilename_thumbnail);
-
-        }catch(IOException io){
-            throw new RuntimeException();
-        }
-    }
-
-
-
 }
 
 

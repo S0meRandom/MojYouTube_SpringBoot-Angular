@@ -1,4 +1,4 @@
-package org.example.demospringbootangular.config;
+package org.example.demospringbootangular.Service;
 
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.repository.UserRepository;
