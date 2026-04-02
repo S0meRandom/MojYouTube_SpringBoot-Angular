@@ -27,13 +27,15 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
               private sanitizer: DomSanitizer){}
 
-  ngOnInit(){
+  async ngOnInit(){
     this.videoId = this.route.snapshot.paramMap.get('id');
     const rawUrl = `http://localhost:8080/api/video/videoPlay/${this.videoId}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
     this.fetchSidebarVideos();
-    this.fetchVideoData(this.videoId);
-    this.fetchVideosChannelData(this.videoData.channel.id);
+    await this.fetchVideoData(this.videoId);
+    if (this.videoData && this.videoData.channel) {
+      this.fetchVideosChannelData(this.videoData.channel.id);
+    }
     this.handleViewUpdate();
   }
   ngOnDestroy(){
@@ -82,6 +84,9 @@ export class VideoDetailPage implements OnInit,OnDestroy{
 
   }
   handleViewUpdate(){
+    if (this.viewTimeout) {
+      clearTimeout(this.viewTimeout);
+    }
     this.viewTimeout = setTimeout(()=>{
       this.updateView(this.videoId);
     },10000);
@@ -89,16 +94,30 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   async subscribe(){
 
   }
-  async handleReaction(id: any,type:String){
-    const response = await fetch(`http://localhost:8080/api/video/${id}/react?type=${type}`,{
+  async handleReaction(id: any,type:string){
+    const oldReaction = this.userReaction;
+    if(this.userReaction === type){
+      this.userReaction = null;
+    }else{
+      this.userReaction = type;
+    }
+
+    try{
+    const response = await fetch(`http://localhost:8080/api/video/react/${id}?type=${type}`,{
       method: 'POST',
       credentials: 'include'
     });
     if(response.ok){
-      this.fetchVideoData(this.videoId);
+      await this.fetchVideoData(this.videoId);
+    }
+    else{
+      this.userReaction = oldReaction;
+    }
+  }catch(error){
+    throw new Error()
     }
   }
 
-
-
 }
+
+

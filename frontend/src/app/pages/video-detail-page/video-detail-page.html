@@ -38,7 +38,7 @@
                     [class.active-like]="userReaction === 'LIKE'"
                     (click)="handleReaction(videoData.id, 'LIKE')">
               <span class="icon">👍</span>
-              <span class="count">{{videoData?.likesCount || 0}}</span>
+              <span class="count">{{videoData?.likes|| 0}}</span>
             </button>
 
             <div class="divider"></div>
@@ -47,6 +47,7 @@
                     [class.active-dislike]="userReaction === 'DISLIKE'"
                     (click)="handleReaction(videoData.id, 'DISLIKE')">
               <span class="icon">👎</span>
+              <span class="count">{{videoData.dislikes || 0}}</span>
             </button>
           </div>
         </div>
