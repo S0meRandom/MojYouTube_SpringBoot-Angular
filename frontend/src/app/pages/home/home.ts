@@ -22,7 +22,9 @@ export class Home implements AfterViewInit, OnInit{
   goVideoDetail(videoId: number){
     this.router.navigate(['/videoDetailPage',videoId]);
   }
-
+  goPlayListPage(){
+    this.router.navigate(['/playlistPage']);
+  }
 
   ngOnInit(): void {
         this.fetchVideos();

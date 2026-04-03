@@ -1,0 +1,20 @@
+<app-header></app-header>
+  <header class="playlist-header">
+    <h1>Twoje playlisty</h1>
+    <button (click)="createPlaylist()">Stwórz playliste</button>
+  </header>
+
+
+  <div class="playlist-grid">
+    <div class="playlist-card" *ngFor="let playlist of playlists">
+      <div class="playlist-thumbnail">
+      </div>
+      <div class="playlist-info">
+        <h3>{{playlist.playlistName}}</h3>
+        <p>Twórca: {{playlist.creator}}</p>
+      </div>
+
+    </div>
+
+  </div>
+

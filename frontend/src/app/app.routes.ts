@@ -5,6 +5,8 @@ import {Register} from './pages/register/register';
 import {UploadVideo} from './pages/upload-video/upload-video';
 import {ChannelPage} from './pages/channel-page/channel-page';
 import {VideoDetailPage} from './pages/video-detail-page/video-detail-page';
+import {PlaylistPage} from './pages/playlist-page/playlist-page';
+
 
 
 export const routes: Routes = [
@@ -14,6 +16,7 @@ export const routes: Routes = [
   {path: 'upload-video', component: UploadVideo},
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path: 'channelPage/:id',component: ChannelPage},
-  {path: 'videoDetailPage/:id',component: VideoDetailPage}
+  {path: 'videoDetailPage/:id',component: VideoDetailPage},
+  {path: 'playlistPage', component: PlaylistPage}
 
 ];
