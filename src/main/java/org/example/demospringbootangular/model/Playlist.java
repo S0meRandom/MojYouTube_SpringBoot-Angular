@@ -19,11 +19,12 @@ public class Playlist {
 
     private String playlistName;
 
-    @ManyToMany
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name="playlist_videos",
             joinColumns = @JoinColumn(name="playlist_id"),
             inverseJoinColumns = @JoinColumn(name="video_id")
+
     )
     private List<Video> playlistVideos = new ArrayList<>();
 
