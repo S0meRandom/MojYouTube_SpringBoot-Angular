@@ -1,0 +1,37 @@
+
+<app-header></app-header>
+<main class="main-container">
+
+  <section class="video-section">
+    <div class="video-player">
+      <span class="placeholder-text">Miejsce na odtwarzacz wideo (16:9)</span>
+    </div>
+
+    <div class="video-info">
+      <h1 class="video-title">Tytuł aktualnie odtwarzanego filmu</h1>
+      <p class="video-author">Autor: Jan Kowalski • Wyświetlenia: 124K</p>
+      <div class="video-description">
+        To jest opis aktualnie odtwarzanego wideo. Możesz tu umieścić tagi, linki lub dodatkowe informacje o filmie.
+      </div>
+    </div>
+  </section>
+
+  <aside class="playlist-section">
+    <div class="playlist-header" *ngIf="playlistData">
+      <h2>Moja ulubiona playlista</h2>
+      <p>{{videos.length}} filmów</p>
+    </div>
+
+    <div class="playlist-video" *ngFor="let video of videos">
+      <div id="videoThumbnail">
+      </div>
+      <div id="videoMeta">
+        <label>{{video.title}}</label>
+        <p>{{video.views}} wyświetleń</p>
+        <p>{{video.channel.name}}</p>
+      </div>
+    </div>
+  </aside>
+
+</main>
+
