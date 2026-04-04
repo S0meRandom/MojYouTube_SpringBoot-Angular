@@ -6,6 +6,8 @@ import {UploadVideo} from './pages/upload-video/upload-video';
 import {ChannelPage} from './pages/channel-page/channel-page';
 import {VideoDetailPage} from './pages/video-detail-page/video-detail-page';
 import {PlaylistPage} from './pages/playlist-page/playlist-page';
+import {PlaylistVideosPage} from './pages/playlist-videos-page/playlist-videos-page';
+
 
 
 
@@ -17,6 +19,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path: 'channelPage/:id',component: ChannelPage},
   {path: 'videoDetailPage/:id',component: VideoDetailPage},
-  {path: 'playlistPage', component: PlaylistPage}
+  {path: 'playlistPage', component: PlaylistPage},
+  {path: 'playlistVideosPage/:id', component: PlaylistVideosPage}
 
 ];

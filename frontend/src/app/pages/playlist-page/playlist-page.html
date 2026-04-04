@@ -1,20 +1,34 @@
 <app-header></app-header>
   <header class="playlist-header">
     <h1>Twoje playlisty</h1>
-    <button (click)="createPlaylist()">Stwórz playliste</button>
+    <button (click)="openCreatePlaylistDialog(myDialog)">Stwórz playliste</button>
   </header>
 
 
   <div class="playlist-grid">
-    <div class="playlist-card" *ngFor="let playlist of playlists">
+    <div class="playlist-card" *ngFor="let playlist of playlists" (click)="goPlaylistVideos(playlist.id)">
       <div class="playlist-thumbnail">
       </div>
       <div class="playlist-info">
         <h3>{{playlist.playlistName}}</h3>
-        <p>Twórca: {{playlist.creator}}</p>
+        <p>Twórca: {{playlist.playlistCreator.username}}</p>
+        <button (click)="deletePlaylist(playlist.id)">Usuń playliste</button>
       </div>
 
     </div>
 
   </div>
+<ng-template #myDialog>
+  <h2 mat-dialog-title>Nowa Playlista</h2>
+
+  <mat-dialog-content>
+    <p>Podaj nazwę dla swojej nowej playlisty:</p>
+    <input [(ngModel)]="playlistData.playlistName" placeholder="Nazwa playlisty..." class="form-control">
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Anuluj</button>
+    <button mat-raised-button color="primary" (click)="createPlaylist()">Utwórz</button>
+  </mat-dialog-actions>
+</ng-template>
 

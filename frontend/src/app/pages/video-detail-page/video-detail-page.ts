@@ -1,38 +1,50 @@
-import {ChangeDetectorRef, Component, OnInit,OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, OnDestroy, TemplateRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {Header} from '../../components/header/header';
 import {NgForOf} from '@angular/common';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatButton} from '@angular/material/button';
+import {MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-video-detail-page',
   imports: [
     Header,
     NgForOf,
-    NgIf
+    NgIf,
+    FormsModule,
+    MatButton,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogTitle
   ],
   templateUrl: './video-detail-page.html',
   styleUrl: './video-detail-page.css',
 })
 export class VideoDetailPage implements OnInit,OnDestroy{
+  constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
+              private sanitizer: DomSanitizer,private dialog: MatDialog){}
   videoId: string | null = null;
   sidebarVideos:any [] = [];
+  playlists: any [] = [];
   videoUrl: SafeUrl | null = null;
   videoData: any = null;
   videosChannelData: any = null;
   private viewTimeout: any;
   userReaction: string | null = null;
+  dialogRef?: MatDialogRef<any>;
+  selectedPlaylist: any = null;
 
-  constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
-              private sanitizer: DomSanitizer){}
+
 
   async ngOnInit(){
     this.videoId = this.route.snapshot.paramMap.get('id');
     const rawUrl = `http://localhost:8080/api/video/videoPlay/${this.videoId}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
     this.fetchSidebarVideos();
-    await this.fetchVideoData(this.videoId);
+    this.fetchVideoData(this.videoId);
     if (this.videoData && this.videoData.channel) {
       this.fetchVideosChannelData(this.videoData.channel.id);
     }
@@ -68,6 +80,23 @@ export class VideoDetailPage implements OnInit,OnDestroy{
     if(response.ok){
       this.sidebarVideos = await response.json();
       this.cdr.detectChanges();
+    }
+  }
+  async fetchUserPlaylists(){
+    try{
+      const response = await fetch("http://localhost:8080/api/playlists/loggerUserPlaylists",{
+        method: 'GET',
+        credentials: 'include'
+      });
+      if(response.ok){
+        this.cdr.detectChanges();
+        this.playlists = await response.json();
+      }else{
+        alert("Błąd w trakcie pobierania playlist użytkownika");
+      }
+
+    }catch(error){
+
     }
   }
   getSafeThumbnailUrl(id: number): SafeUrl {
@@ -116,6 +145,29 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   }catch(error){
     throw new Error()
     }
+  }
+  async addVideoToPlaylist(videoId:number,playlistId:number){
+    try{
+      const response = await fetch(`http://localhost:8080/api/playlists/addToPlaylist/${videoId}/${playlistId}`,{
+        method: 'PUT',
+        credentials: 'include'
+      });
+      if(response.ok){
+        this.closeDialog();
+      }else{
+        alert("Błąd w trakcie dodawania do playlisty");
+      }
+
+    }catch(error){
+
+    }
+  }
+  openAddToPlaylistDialog(templateRef: TemplateRef<any>){
+
+    this.fetchUserPlaylists().then(r => this.dialogRef = this.dialog.open(templateRef));
+  }
+  closeDialog(){
+    this.dialogRef?.close();
   }
 
 }

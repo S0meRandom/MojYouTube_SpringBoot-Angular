@@ -9,7 +9,7 @@
           <img [src]="getSafeThumbnailUrl(video.id)" alt="miniaturka">
         </div>
         <div class="video-info">
-          <h3>{{video.title}}</h3>
+          <h3>{{video?.title}}</h3>
           <p>{{video.views || 0}} wyświetleń </p>
         </div>
       </div>
@@ -50,6 +50,9 @@
               <span class="count">{{videoData.dislikes || 0}}</span>
             </button>
           </div>
+          <div class="addToPlaylist-btn">
+            <button (click)="openAddToPlaylistDialog(myDialog)">Dodaj to playlisty</button>
+          </div>
         </div>
 
       </div>
@@ -57,4 +60,24 @@
   </div>
 
 </div>
+<ng-template #myDialog>
+  <h2 mat-dialog-title>Dodaj do playlisty</h2>
+
+  <mat-dialog-content>
+    <p>Wybierz Playliste</p>
+    <select [(ngModel)]="selectedPlaylist" name="options">
+      <option [ngValue]="null" disabled>-- Wybierz z listy --</option>
+      <option *ngFor="let playlist of playlists" [ngValue]="playlist">
+        {{playlist.playlistName}}
+      </option>
+    </select>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Anuluj</button>
+    <button mat-raised-button color="primary" (click)="addVideoToPlaylist(videoData.id,selectedPlaylist.id)" >Dodaj do playlisty</button>
+  </mat-dialog-actions>
+</ng-template>
+
 </body>
