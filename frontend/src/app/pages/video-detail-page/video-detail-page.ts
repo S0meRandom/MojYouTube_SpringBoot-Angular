@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit, OnDestroy, TemplateRef} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute ,Router} from '@angular/router';
 import {Header} from '../../components/header/header';
 import {NgForOf} from '@angular/common';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -25,7 +25,7 @@ import {MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTi
 })
 export class VideoDetailPage implements OnInit,OnDestroy{
   constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
-              private sanitizer: DomSanitizer,private dialog: MatDialog){}
+              private sanitizer: DomSanitizer,private dialog: MatDialog,private router: Router){}
   videoId: string | null = null;
   sidebarVideos:any [] = [];
   playlists: any [] = [];
@@ -39,16 +39,26 @@ export class VideoDetailPage implements OnInit,OnDestroy{
 
 
 
-  async ngOnInit(){
-    this.videoId = this.route.snapshot.paramMap.get('id');
-    const rawUrl = `http://localhost:8080/api/video/videoPlay/${this.videoId}`;
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+
+      if (id) {
+        this.videoId = id;
+        this.setupVideoPage(id);
+      }
+    });
+
+  }
+  private setupVideoPage(id: string) {
+
+    const rawUrl = `http://localhost:8080/api/video/videoPlay/${id}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
+    this.fetchVideoData(id);
     this.fetchSidebarVideos();
-    this.fetchVideoData(this.videoId);
-    if (this.videoData && this.videoData.channel) {
-      this.fetchVideosChannelData(this.videoData.channel.id);
-    }
     this.handleViewUpdate();
+    this.handleViewUpdate();
+
   }
   ngOnDestroy(){
     if(this.viewTimeout){
@@ -64,14 +74,7 @@ export class VideoDetailPage implements OnInit,OnDestroy{
 
     }
   }
-  async fetchVideosChannelData(id: any){
-    const response = await fetch(`http://localhost:8080/api/channel/${id}`,{
-      method: 'GET'
-    });
-    if(response.ok){
-      this.videosChannelData = await response.json();
-    }
-  }
+
   async fetchSidebarVideos(){
     const response = await fetch("http://localhost:8080/api/video",{
       method: 'GET',
@@ -102,6 +105,7 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   getSafeThumbnailUrl(id: number): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
   }
+
 
   async updateView(id: string | null){
       const response = await fetch(`http://localhost:8080/api/video/${id}`,{
@@ -168,6 +172,9 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   }
   closeDialog(){
     this.dialogRef?.close();
+  }
+  goSidebarVideo(id: any){
+    this.router.navigate(['/videoDetailPage',id]);
   }
 
 }

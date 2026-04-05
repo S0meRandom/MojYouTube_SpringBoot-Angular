@@ -1,27 +1,12 @@
 
 <app-header></app-header>
-<body>
 <div id="content">
-  <aside class="sidebar">
-    <div class="sidebarContainer">
-      <div *ngFor="let video of sidebarVideos" class="video-card">
-        <div class="thumbnailContainer">
-          <img [src]="getSafeThumbnailUrl(video.id)" alt="miniaturka">
-        </div>
-        <div class="video-info">
-          <h3>{{video?.title}}</h3>
-          <p>{{video.views || 0}} wyświetleń </p>
-        </div>
-      </div>
-    </div>
-
-  </aside>
   <div id="video-info">
-  <div class="video-container">
-    <video
-    controls width="50%" crossorigin="use-credentials" [src]="videoUrl">
-    </video>
-  </div>
+    <div class="video-container">
+      <video
+        controls  crossorigin="use-credentials" [src]="videoUrl">
+      </video>
+    </div>
     <div id="video-meta">
       <div class="video-title">
       <h1>{{this.videoData.title}}</h1>
@@ -54,10 +39,24 @@
             <button (click)="openAddToPlaylistDialog(myDialog)">Dodaj to playlisty</button>
           </div>
         </div>
-
       </div>
     </div>
+
   </div>
+  <aside class="sidebar">
+    <div class="sidebarContainer">
+      <div *ngFor="let video of sidebarVideos" class="video-card" (click)="goSidebarVideo(video.id)">
+        <div class="thumbnailContainer">
+          <img [src]="getSafeThumbnailUrl(video.id)" alt="miniaturka">
+        </div>
+        <div class="video-info">
+          <h3>{{video?.title}}</h3>
+          <p>{{video.views || 0}} wyświetleń </p>
+        </div>
+      </div>
+    </div>
+
+  </aside>
 
 </div>
 <ng-template #myDialog>
@@ -80,4 +79,4 @@
   </mat-dialog-actions>
 </ng-template>
 
-</body>
+
