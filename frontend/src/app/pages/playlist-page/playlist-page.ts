@@ -5,7 +5,7 @@ import {NgForOf,NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
-
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-playlist-page',
   imports: [
@@ -22,13 +22,16 @@ export class PlaylistPage implements OnInit{
   }
 
   constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog,
-              private router: Router){}
+              private router: Router,private sanitizer: DomSanitizer){}
 
   openCreatePlaylistDialog(templateRef: TemplateRef<any>){
     this.dialogRef = this.dialog.open(templateRef);
   }
   closeDialog(){
     this.dialogRef?.close();
+  }
+  getSafeThumbnailUrl(id: number): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
   }
 
 

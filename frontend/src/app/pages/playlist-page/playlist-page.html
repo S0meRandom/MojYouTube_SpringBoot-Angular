@@ -8,10 +8,12 @@
   <div class="playlist-grid">
     <div class="playlist-card" *ngFor="let playlist of playlists" (click)="goPlaylistVideos(playlist.id)">
       <div class="playlist-thumbnail">
+        <img [src]="getSafeThumbnailUrl(playlist.playlistVideos[0].id)" alt="thumb">
       </div>
       <div class="playlist-info">
         <h3>{{playlist.playlistName}}</h3>
         <p>Twórca: {{playlist.playlistCreator.username}}</p>
+        <p>Kliknij, aby wyświetlić całą playliste</p>
         <button (click)="deletePlaylist(playlist.id)">Usuń playliste</button>
       </div>
 

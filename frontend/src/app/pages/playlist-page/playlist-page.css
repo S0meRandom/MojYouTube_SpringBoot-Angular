@@ -5,13 +5,31 @@
 .playlist-grid{
   display: grid;
   justify-content: left;
+  margin-top: 30px;
+  gap:30px;
 }
 .playlist-card{
   border-radius: 16px;
-  border: 1px solid red;
   width: 400px;
   height: 300px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
-.playlist-card{
+.playlist-card:hover{
   cursor: pointer;
+}
+.playlist-thumbnail img{
+  width: 400px;
+  height: 300px;
+  border-radius: 16px;
+}
+.playlist-info button {
+  border-radius: 16px;
+  border-color: red;
+  color: white;
+  background-color: red;
+}
+.playlist-info button:hover{
+  cursor: pointer;
+  background-color: orangered;
 }

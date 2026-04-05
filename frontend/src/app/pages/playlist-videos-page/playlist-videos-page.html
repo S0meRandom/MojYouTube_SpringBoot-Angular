@@ -4,14 +4,16 @@
 
   <section class="video-section">
     <div class="video-player">
-      <span class="placeholder-text">Miejsce na odtwarzacz wideo (16:9)</span>
+      <video
+        controls width="100%" crossorigin="use-credentials" [src]="getSafeVideoUrl(videos[0].id)"
+      ></video>
     </div>
 
     <div class="video-info">
-      <h1 class="video-title">Tytuł aktualnie odtwarzanego filmu</h1>
-      <p class="video-author">Autor: Jan Kowalski • Wyświetlenia: 124K</p>
+      <h1 class="video-title">{{ videos[0].title }}</h1>
+      <p class="video-author">Autor: {{ videos[0].channel.name }} • Wyświetlenia: {{ videos[0].views }}</p>
       <div class="video-description">
-        To jest opis aktualnie odtwarzanego wideo. Możesz tu umieścić tagi, linki lub dodatkowe informacje o filmie.
+        {{videos[0].description }}
       </div>
     </div>
   </section>
@@ -23,7 +25,8 @@
     </div>
 
     <div class="playlist-video" *ngFor="let video of videos">
-      <div id="videoThumbnail">
+      <div id="playlist-video-videoThumbnail">
+        <img [src]="getSafeThumbnailUrl(video.id)">
       </div>
       <div id="videoMeta">
         <label>{{video.title}}</label>
