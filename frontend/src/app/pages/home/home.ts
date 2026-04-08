@@ -25,6 +25,9 @@ export class Home implements AfterViewInit, OnInit{
   goPlayListPage(){
     this.router.navigate(['/playlistPage']);
   }
+  goLikedVideosPage(){
+    this.router.navigate(['/likedVideos']);
+  }
 
   ngOnInit(): void {
         this.fetchVideos();

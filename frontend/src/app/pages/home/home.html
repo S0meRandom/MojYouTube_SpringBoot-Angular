@@ -19,7 +19,7 @@
         <div class="sidebar-item">
           <label>Subskrypcje</label>
         </div>
-        <div class="sidebar-item">
+        <div class="sidebar-item" (click)="goLikedVideosPage()">
           <label>Polubione Filmy</label>
         </div>
       </div>
@@ -34,11 +34,8 @@
         <div class="sidebar-item">
           <label>Historia</label>
         </div>
-        <div class="sidebar-item">
-          <label (click)="goPlayListPage()">Playlisty</label>
-        </div>
-        <div class="sidebar-item">
-          <label>Polubione filmy</label>
+        <div class="sidebar-item" (click)="goPlayListPage()">
+          <label>Playlisty</label>
         </div>
       </div>
     </nav>

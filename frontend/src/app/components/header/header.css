@@ -29,6 +29,8 @@ header{
   display: flex;
   align-items: center;
   gap: 10px;
+  outline: none;
+  font-family: 'Roboto', 'Arial', sans-serif;
 
 }
 #headerLeft{

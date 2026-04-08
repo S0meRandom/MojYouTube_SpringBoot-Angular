@@ -1,0 +1,34 @@
+<app-header></app-header>
+
+<main>
+  <div class="contentContainer">
+    <div class="likesVideosInfo">
+      <div class="thumbnail">
+        <img [src]="getSafeThumbnailUrl(videos[0].id)" alt="likedPlaylistThumbnail">
+      </div>
+      <div class="info">
+        <label>Użytkownik: {{userData.username}}</label>
+        <p>Polubione filmy: {{videos.length}}</p>
+      </div>
+
+    </div>
+    <div class="videosContainer">
+      <div class="video-card" *ngFor="let video of videos; let i = index">
+        <div class="video-index">{{i+1}}</div>
+        <div class="video-info">
+        <div class="video-thumbnail">
+          <img [src]="getSafeThumbnailUrl(video.id)" alt="videoThumbnail">
+        </div>
+          <div class="video-meta">
+        <p *ngIf="videos.length === 0">Ładowanie filmów lub brak danych...</p>
+        <h3>{{video.title}}</h3>
+        <label>{{video.channel.name}}</label>
+        <p>{{video.views}} wyświetleń</p>
+            <p>{{video.description}}</p>
+          </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+</main>

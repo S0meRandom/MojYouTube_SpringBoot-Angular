@@ -26,7 +26,7 @@ import {MatDialog, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTi
 export class VideoDetailPage implements OnInit,OnDestroy{
   constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
               private sanitizer: DomSanitizer,private dialog: MatDialog,private router: Router){}
-  videoId: string | null = null;
+  videoId: string = '';
   sidebarVideos:any [] = [];
   playlists: any [] = [];
   videoUrl: SafeUrl | null = null;
@@ -141,7 +141,7 @@ export class VideoDetailPage implements OnInit,OnDestroy{
       credentials: 'include'
     });
     if(response.ok){
-      await this.fetchVideoData(this.videoId);
+      this.fetchVideoData(this.videoId);
     }
     else{
       this.userReaction = oldReaction;
