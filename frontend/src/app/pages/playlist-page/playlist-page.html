@@ -14,9 +14,8 @@
         <h3>{{playlist.playlistName}}</h3>
         <p>Twórca: {{playlist.playlistCreator.username}}</p>
         <p>Kliknij, aby wyświetlić całą playliste</p>
-        <button (click)="deletePlaylist(playlist.id)">Usuń playliste</button>
+        <button (click)="deletePlaylist(playlist.id); $event.stopPropagation()">Usuń playliste</button>
       </div>
-
     </div>
 
   </div>
