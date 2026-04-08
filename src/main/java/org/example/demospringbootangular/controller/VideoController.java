@@ -8,6 +8,7 @@ import org.example.demospringbootangular.model.Channel;
 import org.example.demospringbootangular.model.ReactionType;
 import org.example.demospringbootangular.model.Video;
 import org.example.demospringbootangular.repository.ChannelRepository;
+import org.example.demospringbootangular.repository.ReactionRepository;
 import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class VideoController {
 
     @Autowired
     private ChannelRepository channelRepository;
+
+    @Autowired
+    private ReactionRepository reactionRepository;
 
     @Autowired
     private VideoService videoService;
@@ -150,6 +154,17 @@ public class VideoController {
             AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
             videoService.setReaction(id,user,type);
             return ResponseEntity.ok().build();
+
+        }
+
+        @GetMapping("/likedVideos")
+        public ResponseEntity<?> getUserLikedVideos(Principal principal){
+            AppUser loggedUser = userRepository.findByUsername(principal.getName()).orElseThrow();
+            List<Video> likedVideos = reactionRepository.findLikedVideosByUserId(loggedUser.getId());
+            if(likedVideos.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(likedVideos);
 
         }
 }
