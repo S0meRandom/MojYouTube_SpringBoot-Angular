@@ -1,5 +1,6 @@
 package org.example.demospringbootangular.controller;
 
+import org.example.demospringbootangular.Service.ChannelService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Channel;
 import org.example.demospringbootangular.model.Video;
@@ -25,6 +26,11 @@ public class channelController {
     @Autowired
     private VideoRepository videoRepository;
 
+    @Autowired
+    private ChannelService channelService;
+
+
+
 
     @PostMapping("/create")
     public ResponseEntity<?> createNewChannel(@RequestParam Principal principal, @RequestParam String channelName){
@@ -46,13 +52,12 @@ public class channelController {
 
         return ResponseEntity.ok().body(channel);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<?> subscribeToChannel(@PathVariable Long id){
+    @PutMapping("subscribeOrUnsubscribe/{id}")
+    public ResponseEntity<?> subscribeOrUnsubscribeToChannel(@PathVariable Long id,Principal principal){
         Channel channel = channelRepository.findByid(id).orElseThrow();
-        channel.setSubscribers(channel.getSubscribers()+1);
-        channelRepository.save(channel);
-
-        return ResponseEntity.ok(channel.getSubscribers());
+        AppUser loggedUser = userRepository.findByUsername(principal.getName()).orElseThrow();
+        channelService.subscribeOrUnsubscribe(channel,loggedUser);
+        return ResponseEntity.ok().build();
     }
     @GetMapping("/channelVideos/{id}")
     public ResponseEntity<?> getChannelVideos(@PathVariable Long id){
