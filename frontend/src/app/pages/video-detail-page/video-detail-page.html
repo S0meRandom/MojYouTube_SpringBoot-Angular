@@ -16,7 +16,7 @@
           <h3>{{this.videoData.channel.name}}</h3>
           <p>{{this.videoData.channel.subscribers}} Subskrybentów</p>
         </div>
-        <button class="sub-button" (click)="subscribe()">Subskrybuj</button>
+        <button class="sub-button" (click)="subscribeOrUnsubscribe(this.videoData.channel.id)">{{isSubscribed?'Subskrybujesz' : 'Subskrybuj'}}</button>
         <div class="video-actions">
           <div class="like-dislike-container">
             <button class="action-btn like-btn"

@@ -31,13 +31,11 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   playlists: any [] = [];
   videoUrl: SafeUrl | null = null;
   videoData: any = null;
-  videosChannelData: any = null;
   private viewTimeout: any;
   userReaction: string | null = null;
   dialogRef?: MatDialogRef<any>;
   selectedPlaylist: any = null;
-
-
+  isSubscribed:boolean = false;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -54,10 +52,11 @@ export class VideoDetailPage implements OnInit,OnDestroy{
 
     const rawUrl = `http://localhost:8080/api/video/videoPlay/${id}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
-    this.fetchVideoData(id);
+    this.fetchVideoData(id).then(r => this.checkSubscribtion(this.videoData.channel.id));
     this.fetchSidebarVideos();
     this.handleViewUpdate();
     this.handleViewUpdate();
+
 
   }
   ngOnDestroy(){
@@ -73,6 +72,44 @@ export class VideoDetailPage implements OnInit,OnDestroy{
       this.videoData = await response.json();
 
     }
+  }
+  async checkSubscribtion(channelId: any){
+    try{
+      const response = await fetch(`http://localhost:8080/api/users/me/checkSubscribtion/${channelId}`,{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      if(response.ok){
+        this.isSubscribed = await response.json();
+      }else{
+        this.isSubscribed = false;
+      }
+      this.cdr.detectChanges();
+
+    }catch(error){
+
+    }
+  }
+  async subscribeOrUnsubscribe(channelId: undefined){
+    try{
+      const response = await fetch(`http://localhost:8080/api/channel/subscribeOrUnsubscribe/${channelId}`,{
+        method: 'PUT',
+        credentials: 'include'
+      });
+      if(response.ok){
+        this.isSubscribed = !this.isSubscribed;
+        this.fetchVideoData(this.videoId);
+
+      }
+
+    }catch(error){
+
+    }
+
   }
 
   async fetchSidebarVideos(){
@@ -124,9 +161,7 @@ export class VideoDetailPage implements OnInit,OnDestroy{
       this.updateView(this.videoId);
     },10000);
   }
-  async subscribe(){
 
-  }
   async handleReaction(id: any,type:string){
     const oldReaction = this.userReaction;
     if(this.userReaction === type){

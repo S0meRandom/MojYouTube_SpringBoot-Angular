@@ -6,7 +6,7 @@
       <h1>{{channelData.name}}</h1>
       <p class="stats"><span>{{channelData.subscribers}} Subskrybentów</span><span> {{ this.channelVideos.length }} Filmów</span></p>
       <p class="description">{{channelData.description}}</p>
-      <button class="sub-button" (click)="subscribe()">Subskrybuj</button>
+      <button [ngClass]="isSubscribed ? 'sub-button-subscribed':'sub-button-default'" (click)="subscribeOrUnsubscribe()">{{isSubscribed? 'Subskrybujesz' : 'Subskrybuj'}}</button>
     </div>
   </section>
 

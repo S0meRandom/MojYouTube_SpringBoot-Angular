@@ -39,15 +39,23 @@
 
 .stats { color: var(--secondary-text); font-size: 14px; }
 
-.sub-button {
-  background-color: orange;
-  color: black;
+.sub-button-default {
+  background-color: darkorange;
+  color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
+  outline: none;
+}
+.sub-button-default:hover{
+  background-color: orange;
+}
+.sub-button-subscribed{
+  background-color: orangered;
+
 }
 
 
