@@ -7,7 +7,7 @@ header{
   z-index: 1000;
 }
 #header {
-
+  background-color: white;
   color: black;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   display: flex;
@@ -18,8 +18,8 @@ header{
 
 }
 #header button {
-  background-color: darkorange;
-  color: white;
+  background-color: white;
+  color: orange;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
@@ -32,6 +32,9 @@ header{
   outline: none;
   font-family: 'Roboto', 'Arial', sans-serif;
 
+}
+#header button:hover{
+  background-color: #f2f2f2;
 }
 #headerLeft{
   display: flex;
