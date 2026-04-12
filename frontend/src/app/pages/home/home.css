@@ -14,7 +14,6 @@ header {
 #header {
 
   color: black;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,6 +39,7 @@ header {
 }
 #header button:hover{
   background-color: #f2f2f2;
+  transition: background-color 0.3s ease;
 }
 #headerRight{
   display: flex;
@@ -73,7 +73,6 @@ header {
   background-color: #ffffff;
   padding: 12px;
   position: fixed;
-  border-right: 1px solid #e5e5e5;
   font-family: 'Roboto', Arial, sans-serif;
   box-sizing: border-box;
   top: 56px;
@@ -137,7 +136,6 @@ header {
 }
 .video-card{
   display:flex;
-  gap: 20px;
   flex-direction: column;
 
 }
@@ -169,10 +167,11 @@ header {
   border-radius: 16px;
 }
 .video-card:hover{
-  background-color: #f2f2f2;
+  background-color: #f1f5f9;
   border-radius: 16px;
   cursor: pointer;
   box-shadow: 5px 5px 5px #f2f2f2;
+  transition: background-color 0.3s ease;
 
 }
 

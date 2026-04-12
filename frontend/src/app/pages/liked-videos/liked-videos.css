@@ -35,6 +35,7 @@
   padding: 20px;
 
 }
+
 .video-card{
   border-radius: 16px;
   width: 100%;
@@ -52,22 +53,13 @@
   cursor: pointer;
   background-color: #f2f2f2;
 }
-.video-index{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 90px;
-  font-size: 14px;
-  color: #606060;
-  font-weight: 500;
-}
+
 .video-info{
   display: flex;
   padding: 12px;
   gap: 16px;
 }
-.video-card img{
+.video-thumbnail img{
   height: 300px;
   width: 400px;
   border-radius: 16px;

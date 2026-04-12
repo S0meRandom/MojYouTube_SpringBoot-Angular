@@ -4,11 +4,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import {Sidebar} from '../../components/sidebar/sidebar';
 
 @Component({
   selector: 'app-channel-page',
   imports: [
-    Header, NgIf, NgForOf, NgClass
+    Header, NgIf, NgForOf, NgClass, Sidebar
   ],
   templateUrl: './channel-page.html',
   styleUrl: './channel-page.css',

@@ -3,13 +3,14 @@ import {Header} from '../../components/header/header';
 import {Router} from '@angular/router';
 import {CommonModule, NgForOf, NgIf} from '@angular/common';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {Sidebar} from '../../components/sidebar/sidebar';
 
 @Component({
   selector: 'app-liked-videos',
   imports: [
     Header,
     NgForOf,
-    NgIf,CommonModule
+    NgIf, CommonModule, Sidebar
   ],
   templateUrl: './liked-videos.html',
   styleUrl: './liked-videos.css',

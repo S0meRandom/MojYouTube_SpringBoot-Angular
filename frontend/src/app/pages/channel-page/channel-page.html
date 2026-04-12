@@ -1,32 +1,44 @@
 <app-header></app-header>
 
-<main class="container" >
-  <section class="profile-section">
-    <div class="profile-info">
-      <h1>{{channelData.name}}</h1>
-      <p class="stats"><span>{{channelData.subscribers}} Subskrybentów</span><span> {{ this.channelVideos.length }} Filmów</span></p>
-      <p class="description">{{channelData.description}}</p>
-      <button [ngClass]="isSubscribed ? 'sub-button-subscribed':'sub-button-default'" (click)="subscribeOrUnsubscribe()">{{isSubscribed? 'Subskrybujesz' : 'Subskrybuj'}}</button>
-    </div>
-  </section>
+<div class="page-wrapper">
 
-  <nav class="channel-nav">
-    <a href="#" class="active">Strona główna</a>
-    <a href="#">Wideo</a>
-    <a href="#">Informacje</a>
-  </nav>
+  <app-sidebar></app-sidebar>
 
-  <section class="video-grid">
-    <div class="video-card" *ngFor="let video of channelVideos" (click)="goVideoDetail(this.channelData.id)">
-      <div class="thumbnail">
-        <img [src]="getSafeThumbnailUrl(video.id)">
+  <main class="container">
+
+    <section class="profile-section">
+      <div class="profile-info">
+        <h1>{{channelData.name}}</h1>
+        <p class="stats">
+          <span>{{channelData.subscribers}} Subskrybentów</span>
+          <span>{{ this.channelVideos.length }} Filmów</span>
+        </p>
+        <p class="description">{{channelData.description}}</p>
+        <button
+          [ngClass]="isSubscribed ? 'sub-button-subscribed' : 'sub-button-default'"
+          (click)="subscribeOrUnsubscribe()">
+          {{isSubscribed ? 'Subskrybujesz' : 'Subskrybuj'}}
+        </button>
       </div>
-      <div class="video-details">
-        <h3>{{ video.title }}</h3>
-        <p>{{ video.views }}</p>
+    </section>
+
+    <nav class="channel-nav">
+      <a href="#" class="active">Strona główna</a>
+      <a href="#">Wideo</a>
+      <a href="#">Informacje</a>
+    </nav>
+
+    <section class="video-grid">
+      <div class="video-card" *ngFor="let video of channelVideos" (click)="goVideoDetail(this.channelData.id)">
+        <div class="thumbnail">
+          <img [src]="getSafeThumbnailUrl(video.id)">
+        </div>
+        <div class="video-details">
+          <h3>{{ video.title }}</h3>
+          <p>{{ video.views }} wyświetleń</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-  </section>
-</main>
-
+  </main>
+</div>

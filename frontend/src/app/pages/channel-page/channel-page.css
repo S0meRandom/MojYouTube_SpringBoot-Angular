@@ -5,12 +5,19 @@
   --secondary-text: #aaaaaa;
   --card-bg: #1e1e1e;
 }
-
+:host{
+  display: block;
+}
+.page-wrapper{
+  display:flex;
+  width: 100%;
+  align-items: flex-start;
+}
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
   padding: 0 20px;
+  width: 100%;
 }
 
 
@@ -24,7 +31,7 @@
 .profile-section {
   display: flex;
   align-items: center;
-  margin-top: -50px;
+  margin-top: 0;
   margin-bottom: 30px;
 }
 
@@ -70,7 +77,6 @@
   text-decoration: none;
   color: var(--secondary-text);
   padding: 15px 0;
-  font-weight: bold;
 }
 
 .channel-nav a.active {
@@ -83,6 +89,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
+
 }
 
 .video-card {
@@ -92,8 +99,17 @@
   transition: transform 0.2s;
   cursor: pointer;
 }
-
-.video-card:hover { transform: scale(1.03); }
+.thumbnail{
+  display:flex;
+  margin: auto;
+}
+.video-card:hover {
+  background-color: #f1f5f9;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 5px 5px 5px #f2f2f2;
+  transition: background-color 0.3s ease;
+}
 
 .thumbnail img{
   width: 250px;

@@ -1,1 +1,27 @@
-<p>sidebar works!</p>
+<aside class="sidebar">
+  <nav>
+    <div class="sidebar-section">
+      <div class="sidebar-item">
+        <label>Subskrypcje</label>
+      </div>
+      <div class="sidebar-item" (click)="goLikedVideosPage()">
+        <label>Polubione Filmy</label>
+      </div>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-section">
+      <div class="section-header">Ty <span>&rsaquo;</span></div>
+      <div class="sidebar-item">
+        <label>Twoje filmy</label>
+      </div>
+      <div class="sidebar-item">
+        <label>Historia</label>
+      </div>
+      <div class="sidebar-item" (click)="goPlayListPage()">
+        <label>Playlisty</label>
+      </div>
+    </div>
+  </nav>
+</aside>

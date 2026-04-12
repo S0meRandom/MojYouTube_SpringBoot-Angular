@@ -1,5 +1,4 @@
 <app-header></app-header>
-
 <main>
   <div class="contentContainer">
     <div class="likesVideosInfo">
@@ -14,7 +13,6 @@
     </div>
     <div class="videosContainer">
       <div class="video-card" *ngFor="let video of videos; let i = index">
-        <div class="video-index">{{i+1}}</div>
         <div class="video-info">
         <div class="video-thumbnail">
           <img [src]="getSafeThumbnailUrl(video.id)" alt="videoThumbnail">
