@@ -3,9 +3,10 @@ import {Router, RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ChangeDetectorRef } from '@angular/core';
+import {FormsModule} from '@angular/forms';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -15,6 +16,7 @@ export class Home implements AfterViewInit, OnInit{
   @ViewChild('videoContainer') container!: ElementRef;
   videos: any[] = [];
   userData: any = null;
+  searchQuery: string = '';
 
   getSafeThumbnailUrl(id: number): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
@@ -69,6 +71,24 @@ export class Home implements AfterViewInit, OnInit{
       console.error("Błąd w trakcie ładowania danych użytkownika");
     }
 
+  }
+  async searchVideos(){
+    if (!this.searchQuery || this.searchQuery.trim() === '') {
+      await this.fetchVideos();
+      return;
+    }
+    try{
+      const response = await fetch(`http://localhost:8080/api/video/searchVideos?query=${this.searchQuery}`,{
+        method: 'GET'
+      });
+      if(response.ok){
+        this.videos = await response.json();
+        this.cdr.detectChanges();
+      }
+
+    }catch(error){
+
+    }
   }
 
 

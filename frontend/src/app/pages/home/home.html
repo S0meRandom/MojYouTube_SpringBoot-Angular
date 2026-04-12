@@ -6,6 +6,10 @@
         <h1>ZwierzoTube</h1>
       </div>
     </div>
+    <div id="headerCenter">
+      <input id="searchInput" type="text" [(ngModel)]="searchQuery">
+      <button (click)="searchVideos()">Szukaj</button>
+    </div>
     <div id="headerRight">
       <button id="profil-btn" (click)="goChannelPage()">Mój Kanał</button>
       <button id="uploadVideo-btn" (click)="goUploadVideo()">Dodaj film</button>
@@ -28,9 +32,6 @@
 
       <div class="sidebar-section">
         <div class="section-header">Ty <span>&rsaquo;</span></div>
-        <div class="sidebar-item">
-          <label>Twoje filmy</label>
-        </div>
         <div class="sidebar-item">
           <label>Historia</label>
         </div>

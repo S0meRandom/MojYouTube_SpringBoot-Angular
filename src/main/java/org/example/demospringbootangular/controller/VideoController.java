@@ -29,7 +29,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.sql.Array;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -166,6 +168,17 @@ public class VideoController {
             }
             return ResponseEntity.ok(likedVideos);
 
+        }
+
+        @GetMapping("/searchVideos")
+        public ResponseEntity<?> searchVideos(@RequestParam(required = false) String query){
+            List<Video> searchedVideos = new ArrayList<>();
+            if(query==null || query.isBlank()){
+                searchedVideos = videoRepository.findAll();
+                return ResponseEntity.ok(searchedVideos);
+            }
+            searchedVideos = videoRepository.searchVideos(query);
+            return ResponseEntity.ok(searchedVideos);
         }
 }
 

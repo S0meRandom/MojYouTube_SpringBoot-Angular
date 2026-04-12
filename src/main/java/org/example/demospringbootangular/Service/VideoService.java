@@ -9,6 +9,7 @@ import org.example.demospringbootangular.repository.ReactionRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -69,6 +71,12 @@ public class VideoService {
             reactionRepository.save(reaction);
         }
         videoRepository.save(video);
+    }
+    public List<Video> searchVideos(String query){
+        if(query==null || query.trim().isEmpty()){
+            return videoRepository.findAll();
+        }
+        return videoRepository.searchVideos(query);
     }
     @Transactional
     public void handleVideo_Thumbnail(MultipartFile videoFile, MultipartFile thumbnailFile, Video video){
