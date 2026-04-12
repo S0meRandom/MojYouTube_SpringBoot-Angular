@@ -20,8 +20,8 @@ public class ChannelService {
         Optional<Subscription> subscription = subscriptionRepository.findByChannelAndSubscriber(channel,user);
 
         if(subscription.isPresent()){
-            Subscription existingSubscribtion = subscription.get();
-            subscriptionRepository.decrementSubscribers(existingSubscribtion.getId());
+            Subscription existingSubscription = subscription.get();
+            subscriptionRepository.decrementSubscribers(existingSubscription.getId());
         }else{
             Subscription newSub = new Subscription();
             newSub.setChannel(channel);
