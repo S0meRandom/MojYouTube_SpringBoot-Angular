@@ -157,3 +157,43 @@
 .active-dislike {
   color: #ff4e4e;
 }
+.comment-section{
+  margin-top: 20px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+
+}
+.add-comment{
+  display: flex;
+  gap: 15px;
+}
+.add-comment input{
+  border:none;
+  border-bottom: 1px solid #e0e0e0;
+  background: transparent;
+  padding: 8px 0;
+  width: 100%;
+  transition: border-color 0.3s;
+
+}
+.add-comment button{
+  border-radius: 16px;
+  padding: 10px 10px;
+  border:none;
+  outline: none;
+  background-color: #3ea6ff;
+  color: white;
+  cursor: pointer;
+
+}
+.add-comment button:hover{
+  background-color: cornflowerblue;
+
+}
+.add-comment input:focus{
+  border-bottom: 2px solid #0f0f0f;
+  outline: none;
+}
+

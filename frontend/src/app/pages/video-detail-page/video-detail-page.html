@@ -41,8 +41,22 @@
         </div>
       </div>
     </div>
+    <div class="comment-section">
+      <div class="comment-header">
+        <label>{{videoComments.length}} komentarzy</label>
+      </div>
+      <div class="add-comment">
+        <input type="text" placeholder="Dodaj komentarz" [(ngModel)]="addCommentText">
+        <button (click)="addComment(videoId)">Opublikuj</button>
+      </div>
+      <div class="comment-card" *ngFor="let comment of videoComments">
+        <label>@{{comment.author.username}}</label>
+        <p>{{comment.commentContent}}</p>
+      </div>
+    </div>
 
   </div>
+
   <aside class="sidebar">
     <div class="sidebarContainer">
       <div *ngFor="let video of sidebarVideos" class="video-card" (click)="goSidebarVideo(video.id)">
