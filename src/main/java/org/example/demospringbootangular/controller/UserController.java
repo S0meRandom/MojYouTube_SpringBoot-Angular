@@ -70,6 +70,15 @@ public class UserController {
             return ResponseEntity.ok(false);
         }
     }
+    @GetMapping("/userSubscriptions")
+    public ResponseEntity<?> getUserSubscriptions(Principal principal){
+        AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
+        List<Channel> subscribingChannels = subscriptionRepository.findSubscribedChannelsByUserId(user.getId());
+        if(subscribingChannels.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(subscribingChannels);
+    }
 
 
 

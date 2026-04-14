@@ -24,5 +24,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription,Long>
     void decrementSubscribers(Long id);
 
     List<Subscription> findBySubscriber(AppUser user);
+    @Query("SELECT r.channel FROM Subscription r WHERE r.subscriber.id = :userId ")
+    List<Channel> findSubscribedChannelsByUserId(Long userId);
 
 }
