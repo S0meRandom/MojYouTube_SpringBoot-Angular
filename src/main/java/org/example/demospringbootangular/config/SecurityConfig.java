@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/video/upload").authenticated()
-                        .requestMatchers("/login","/api/users/**","/videoFolder/**","/api/video/**","/api/auth/**","/api/channel/**").permitAll()
+                        .requestMatchers("/login","/api/users/**","/videoFolder/**","/api/video/**","/api/auth/**","/api/channel/**","/api/comments/**").permitAll()
                         .anyRequest().authenticated()
 
                 )

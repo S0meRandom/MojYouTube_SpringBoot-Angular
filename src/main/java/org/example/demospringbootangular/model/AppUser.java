@@ -1,5 +1,6 @@
 package org.example.demospringbootangular.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +12,7 @@ public class AppUser {
 
     @Column(unique=true,nullable=false)
     private String username;
-
+    @JsonIgnore
     @Column(nullable=false)
     private String password;
 
