@@ -20,7 +20,7 @@
   <aside class="sidebar">
     <nav>
       <div class="sidebar-section">
-        <div class="sidebar-item">
+        <div class="sidebar-item" (click)="goSubscribersPage()">
           <label>Subskrypcje</label>
         </div>
         <div class="sidebar-item" (click)="goLikedVideosPage()">
@@ -39,7 +39,14 @@
           <label>Playlisty</label>
         </div>
       </div>
+
     </nav>
+    <footer>
+      <div class="footer-div">
+        <button id="logout-btn" (click)="logout()">Wyloguj się</button>
+      </div>
+    </footer>
+
   </aside>
 
   <div class="videoContainer">
@@ -57,7 +64,9 @@
         </div>
 
       </div>
+
     </main>
+
   </div>
 </div>
 

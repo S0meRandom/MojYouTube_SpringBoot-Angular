@@ -12,7 +12,7 @@
 
     </div>
     <div class="videosContainer">
-      <div class="video-card" *ngFor="let video of videos; let i = index">
+      <div class="video-card" *ngFor="let video of videos; let i = index" (click)="goLikedVideo(video.id)">
         <div class="video-info">
         <div class="video-thumbnail">
           <img [src]="getSafeThumbnailUrl(video.id)" alt="videoThumbnail">

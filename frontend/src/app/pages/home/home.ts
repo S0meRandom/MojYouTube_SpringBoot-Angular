@@ -46,6 +46,12 @@ export class Home implements AfterViewInit, OnInit{
   goChannelPage(){
     this.router.navigate(['channelPage',this.userData.id]);
   }
+  goSubscribersPage(){
+    this.router.navigate(['subscribersPage']);
+  }
+  goLoginPage(){
+    this.router.navigate(['login']);
+  }
 
   async fetchVideos(){
     const response = await fetch("http://localhost:8080/api/video",{
@@ -90,6 +96,21 @@ export class Home implements AfterViewInit, OnInit{
 
     }
   }
+  async logout(){
+    try{
+      const response = await fetch("http://localhost:8080/api/auth/logout",{
+        method: 'POST',
+        credentials: 'include'
+      });
+      if(response.ok){
+        this.goLoginPage();
+      }
+
+    }catch(error){
+
+    }
+  }
+
 
 
 }

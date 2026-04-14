@@ -58,4 +58,7 @@ export class LikedVideos implements OnInit{
   getSafeThumbnailUrl(id: number): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
   }
+  goLikedVideo(id:string){
+    this.route.navigate(['videoDetailPage',id])
+  }
 }
