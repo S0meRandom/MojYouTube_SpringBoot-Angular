@@ -27,10 +27,11 @@ public class CommentController {
     private CommentRepository commentRepository;
 
     @PostMapping("/create/{id}")
-    public void createComment(@RequestBody String content, @PathVariable("id") Long video_id, Principal principal){
+    public void createComment(@RequestBody Map<String,String> content, @PathVariable("id") Long video_id, Principal principal){
         Comment newComment = new Comment();
+        String commentContent = content.get("content");
         AppUser commenter = userRepository.findByUsername(principal.getName()).orElseThrow();
-        newComment.setCommentContent(content);
+        newComment.setCommentContent(commentContent);
         newComment.setUser_id(commenter.getId());
         newComment.setVideo_id(video_id);
         commentRepository.save(newComment);
