@@ -46,7 +46,7 @@
 
 .stats { color: var(--secondary-text); font-size: 14px; }
 
-.sub-button-default {
+.sub-button-default{
   background-color: darkorange;
   color: white;
   border: none;
@@ -64,6 +64,16 @@
   background-color: orangered;
 
 }
+.edit-button{
+  border-radius:16px;
+  padding: 10px 10px;
+  color: white;
+  background-color: darkorange;
+  font-weight: bold;
+  border:none;
+  outline:none;
+  cursor:pointer;
+}
 
 
 .channel-nav {
@@ -73,13 +83,13 @@
   margin-bottom: 20px;
 }
 
-.channel-nav a {
+.channel-nav label {
   text-decoration: none;
   color: var(--secondary-text);
   padding: 15px 0;
 }
 
-.channel-nav a.active {
+.channel-nav label:hover {
   color: var(--text-color);
   border-bottom: 2px solid var(--text-color);
 }
@@ -112,7 +122,7 @@
 }
 
 .thumbnail img{
-  width: 250px;
+  width: 300px;
   height: 200px;
   aspect-ratio: 16 / 9;
   background-color: #333;

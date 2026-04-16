@@ -69,14 +69,16 @@ header {
   line-height: 1;
 
 }
-#logo{
+.logo{
   border-radius: 16px;
   display:flex;
-  border: 1px solid orange;
+  border:none;
+  outline:none;
   padding: 8px 16px;
   align-items: center;
   background-color: darkorange;
   font-family: "Arial Black"
+
 
 }
 .container{

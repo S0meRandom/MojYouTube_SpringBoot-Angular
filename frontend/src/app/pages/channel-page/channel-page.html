@@ -14,18 +14,18 @@
           <span>{{ this.channelVideos.length }} Filmów</span>
         </p>
         <p class="description">{{channelData.description}}</p>
-        <button
+        <button *ngIf="!isMyChannel"
           [ngClass]="isSubscribed ? 'sub-button-subscribed' : 'sub-button-default'"
           (click)="subscribeOrUnsubscribe()">
           {{isSubscribed ? 'Subskrybujesz' : 'Subskrybuj'}}
         </button>
+        <button *ngIf = "isMyChannel" class="edit-button" (click)="goEditChannel()">Edytuj Kanał</button>
       </div>
     </section>
 
     <nav class="channel-nav">
-      <a href="#" class="active">Strona główna</a>
-      <a href="#">Wideo</a>
-      <a href="#">Informacje</a>
+      <label>Strona główna</label>
+      <label>Wideo</label>
     </nav>
 
     <section class="video-grid">

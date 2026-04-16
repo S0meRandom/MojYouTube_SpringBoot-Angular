@@ -9,6 +9,8 @@ import {PlaylistPage} from './pages/playlist-page/playlist-page';
 import {PlaylistVideosPage} from './pages/playlist-videos-page/playlist-videos-page';
 import {LikedVideos} from './pages/liked-videos/liked-videos';
 import {SubscribersPage} from './pages/subscribers-page/subscribers-page';
+import {HistoryPage} from './pages/history-page/history-page';
+import {EditChannel} from './pages/edit-channel/edit-channel';
 
 
 
@@ -24,6 +26,8 @@ export const routes: Routes = [
   {path: 'playlistPage', component: PlaylistPage},
   {path: 'playlistVideosPage/:id', component: PlaylistVideosPage},
   {path: 'likedVideos', component: LikedVideos},
-  {path: 'subscribersPage', component: SubscribersPage}
+  {path: 'subscribersPage', component: SubscribersPage},
+  {path: 'historyPage', component: HistoryPage},
+  {path: 'editChannelPage', component: EditChannel}
 
 ];

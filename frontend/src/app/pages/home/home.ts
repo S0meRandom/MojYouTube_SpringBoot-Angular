@@ -52,6 +52,9 @@ export class Home implements AfterViewInit, OnInit{
   goLoginPage(){
     this.router.navigate(['login']);
   }
+  goHistoryPage(){
+    this.router.navigate(['historyPage']);
+  }
 
   async fetchVideos(){
     const response = await fetch("http://localhost:8080/api/video",{

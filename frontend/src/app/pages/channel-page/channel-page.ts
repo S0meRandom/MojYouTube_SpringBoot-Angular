@@ -19,13 +19,17 @@ export class ChannelPage implements OnInit{
   channelData: any = null;
   channelVideos: any[] = [];
   isSubscribed:boolean = false;
+  isMyChannel: boolean = false;
   constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,
               private sanitizer: DomSanitizer,private router: Router) {}
 
-  ngOnInit(){
+  async ngOnInit(){
       this.userId = this.route.snapshot.paramMap.get('id');
-      this.getChannelData(this.userId);
-      this.checkSubscribtion(this.channelData.id);
+      await this.getChannelData(this.userId);
+      if(this.channelData){
+        this.checkSubscribtion(this.channelData.id);
+        this.checkIfChannelOwner();
+      }
   }
 
   getSafeThumbnailUrl(id: number): SafeUrl {
@@ -45,6 +49,7 @@ export class ChannelPage implements OnInit{
     }
 
   }
+
   async checkSubscribtion(channelId: any){
     try{
       const response = await fetch(`http://localhost:8080/api/users/me/checkSubscribtion/${channelId}`,{
@@ -95,8 +100,30 @@ export class ChannelPage implements OnInit{
     }
 
   }
+  async checkIfChannelOwner() {
+    try {
+
+      const response = await fetch(`http://localhost:8080/api/users/me`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const currentUser = await response.json();
+
+        this.isMyChannel = currentUser.id === this.channelData.id;
+        this.cdr.detectChanges();
+      }
+    } catch (error) {
+      console.error("Błąd"  );
+      this.isMyChannel = false;
+    }
+  }
   goVideoDetail(videoId: number){
     this.router.navigate(['/videoDetailPage',videoId]);
+  }
+  goEditChannel(){
+    this.router.navigate(['editChannelPage']);
   }
 
 }
