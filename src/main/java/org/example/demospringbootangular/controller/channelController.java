@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/channel")
@@ -67,5 +68,21 @@ public class channelController {
         return ResponseEntity.ok().body(channelVideos);
 
     };
+    @PutMapping("/editChannelInfo")
+    public ResponseEntity<?> editChannelInfo(@RequestBody Map<String,String> newChannelBody, Principal principal){
+        String newChannelName = newChannelBody.get("name");
+        String newChannelCountry = newChannelBody.get("country");
+        String newChannelDescription = newChannelBody.get("description");
+
+        AppUser channelOwner = userRepository.findByUsername(principal.getName()).orElseThrow();
+        Channel ownersChannel = channelRepository.findByowner(channelOwner).orElseThrow();
+        ownersChannel.setName(newChannelName);
+        ownersChannel.setCountry(newChannelCountry);
+        ownersChannel.setDescription(newChannelDescription);
+        channelRepository.save(ownersChannel);
+
+        return ResponseEntity.ok().build();
+
+    }
 
 }
