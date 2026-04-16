@@ -9,7 +9,6 @@ import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -35,7 +34,7 @@ public class channelController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createNewChannel(@RequestParam Principal principal, @RequestParam String channelName){
-        if(channelRepository.findByname(channelName).isPresent()){
+        if(channelRepository.findByName(channelName).isPresent()){
             return ResponseEntity.notFound().build();
         }
         AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
@@ -49,7 +48,7 @@ public class channelController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserChannel(@PathVariable Long id){
         AppUser loggedUser = userRepository.findById(id).orElseThrow();
-        Channel channel = channelRepository.findByowner(loggedUser).orElseThrow();
+        Channel channel = channelRepository.findByOwner(loggedUser).orElseThrow();
 
         return ResponseEntity.ok().body(channel);
     }
@@ -70,12 +69,12 @@ public class channelController {
     };
     @PutMapping("/editChannelInfo")
     public ResponseEntity<?> editChannelInfo(@RequestBody Map<String,String> newChannelBody, Principal principal){
-        String newChannelName = newChannelBody.get("name");
-        String newChannelCountry = newChannelBody.get("country");
-        String newChannelDescription = newChannelBody.get("description");
+        String newChannelName = newChannelBody.get("newChannelName");
+        String newChannelCountry = newChannelBody.get("newChannelCountry");
+        String newChannelDescription = newChannelBody.get("newChannelDescription");
 
         AppUser channelOwner = userRepository.findByUsername(principal.getName()).orElseThrow();
-        Channel ownersChannel = channelRepository.findByowner(channelOwner).orElseThrow();
+        Channel ownersChannel = channelRepository.findByOwner(channelOwner).orElseThrow();
         ownersChannel.setName(newChannelName);
         ownersChannel.setCountry(newChannelCountry);
         ownersChannel.setDescription(newChannelDescription);

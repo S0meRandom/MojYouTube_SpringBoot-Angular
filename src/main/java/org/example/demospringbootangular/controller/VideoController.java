@@ -1,7 +1,5 @@
 package org.example.demospringbootangular.controller;
 
-import jakarta.annotation.Resource;
-import org.apache.coyote.Response;
 import org.example.demospringbootangular.Service.VideoService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Channel;
@@ -13,27 +11,20 @@ import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/video")
@@ -58,7 +49,7 @@ public class VideoController {
                            @RequestParam("title") String title,
                            @RequestParam("description") String description,Principal principal){
         AppUser currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
-        Channel channel = channelRepository.findByowner(currentUser).orElseThrow();
+        Channel channel = channelRepository.findByOwner(currentUser).orElseThrow();
 
         Video video = new Video();
         video.setTitle(title);

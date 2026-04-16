@@ -1,40 +1,35 @@
 <app-header></app-header>
 <div class="edit-container">
 
-
   <div class="edit-content">
-
     <section class="edit-section">
       <h2>Edycja kanału</h2>
       <p class="section-desc">Panel edytowania informacji o twoim kanale</p>
 
     </section>
-
-    <hr class="divider">
-
     <section class="edit-section">
       <h2>Podstawowe informacje</h2>
 
       <div class="form-group">
         <label for="channelName">Nazwa</label>
         <p class="hint">Wybierz nazwę kanału, która reprezentuje Ciebie i Twoje treści.</p>
-        <input type="text" id="channelName" placeholder="Nowa nazwa kanału">
+        <input type="text" id="channelName" placeholder="Nowa nazwa kanału" [(ngModel)]="newChannelName">
       </div>
 
       <div class="form-group">
         <label for="channelHandle">Państwo pochodzenia</label>
         <p class="hint">Podaj państwo pochodzenia kanału</p>
-        <input type="text" id="channelHandle" placeholder="Twoje państwo">
+        <input type="text" id="channelHandle" placeholder="Twoje państwo" [(ngModel)]="newChannelCountry">
       </div>
 
       <div class="form-group">
         <label for="description">Opis</label>
         <p class="hint">Opowiedz widzom, o czym jest Twój kanał.</p>
-        <textarea id="description" rows="5" placeholder="Twój opis kanału"></textarea>
+        <textarea id="description" rows="5" placeholder="Twój opis kanału" [(ngModel)]="newChannelDescription"></textarea>
       </div>
     </section>
     <div class="btn-div">
-      <button class="upload-btn">Opublikuj</button>
+      <button class="upload-btn" (click)="changeChannelInfo()">Opublikuj</button>
     </div>
 
   </div>

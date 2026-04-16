@@ -5,13 +5,20 @@
   --yt-blue: #065fd4;
   --border-color: #e5e5e5;
 }
-
+.edit-content{
+  display:flex;
+  flex-direction: column;
+}
 .edit-container {
-  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Roboto', sans-serif;
   color: var(--text-main);
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .edit-header {
@@ -32,7 +39,8 @@
 
 
 .action-buttons {
-  display: flex; gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 
@@ -76,9 +84,8 @@
 }
 .btn-div{
   display:flex;
-  width:50%;
-  justify-content: left;
-  margin-left: 250px;
+  width: 100%;
+  justify-content: center;
 }
 
 .upload-btn:hover{

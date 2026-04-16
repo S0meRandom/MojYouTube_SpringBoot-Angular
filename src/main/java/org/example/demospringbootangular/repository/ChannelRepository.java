@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface ChannelRepository extends JpaRepository<Channel,Long> {
     Optional<Channel> findByid(Long id);
-    Optional<Channel> findByname(String channelName);
-    Optional<Channel> findByowner(AppUser owner);
+    Optional<Channel> findByName(String channelName);
+    Optional<Channel> findByOwner(AppUser owner);
 
 
 }
