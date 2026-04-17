@@ -4,7 +4,6 @@ import org.example.demospringbootangular.Service.NotificationService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Notification;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +29,7 @@ public class NotificationServiceTest {
         String expectedContent = "Kamil właśnie dodał komentarz do twojego filmikuMoje Kotki";
 
         assertNotNull(result);
-        assertEquals("23",result.getUser_id());
+        assertEquals("23",result.getUserId());
         assertEquals(expectedContent,result.getContent());
 
 
@@ -48,6 +47,6 @@ public class NotificationServiceTest {
 
         assertNotNull(result);
         assertEquals(expectedContent,result.getContent());
-        assertEquals("23",result.getUser_id());
+        assertEquals("23",result.getUserId());
     }
 }

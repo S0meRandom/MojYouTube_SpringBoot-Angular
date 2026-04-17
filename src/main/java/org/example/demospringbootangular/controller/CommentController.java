@@ -1,9 +1,13 @@
 package org.example.demospringbootangular.controller;
 
+import org.example.demospringbootangular.Service.CommentService;
+import org.example.demospringbootangular.Service.NotificationService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Comment;
+import org.example.demospringbootangular.model.Video;
 import org.example.demospringbootangular.repository.CommentRepository;
 import org.example.demospringbootangular.repository.UserRepository;
+import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
@@ -26,15 +30,28 @@ public class CommentController {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private VideoRepository videoRepository;
+
+    @Autowired
+    private CommentService commentService;
+
     @PostMapping("/create/{id}")
     public void createComment(@RequestBody Map<String,String> content, @PathVariable("id") Long video_id, Principal principal){
-        Comment newComment = new Comment();
         String commentContent = content.get("content");
         AppUser commenter = userRepository.findByUsername(principal.getName()).orElseThrow();
-        newComment.setCommentContent(commentContent);
-        newComment.setUser_id(commenter.getId());
-        newComment.setVideo_id(video_id);
-        commentRepository.save(newComment);
+
+        commentService.createComment(commentContent,video_id,commenter);
+
+        Video video = videoRepository.findByid(video_id).orElseThrow();
+        AppUser videoCreator = video.getAuthor();
+        String videoName = video.getTitle();
+
+        notificationService.newCommentNotification(videoName,commenter.getUsername(),videoCreator);
+
 
     }
     @GetMapping("/getVideoComments/{id}")
