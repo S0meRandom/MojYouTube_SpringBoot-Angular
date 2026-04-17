@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, AfterViewInit, OnInit} from '@angular/core';
+import {Component, ViewChild, ElementRef, AfterViewInit, OnInit, HostListener} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -17,6 +17,8 @@ export class Home implements AfterViewInit, OnInit{
   videos: any[] = [];
   userData: any = null;
   searchQuery: string = '';
+  isNotificationOpen = false;
+  notifications: any[] = [];
 
   getSafeThumbnailUrl(id: number): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
@@ -113,6 +115,32 @@ export class Home implements AfterViewInit, OnInit{
 
     }
   }
+  openNotifications(event:Event){
+    event.stopPropagation();
+    this.isNotificationOpen = !this.isNotificationOpen;
+    if(this.isNotificationOpen){
+      this.fetchNotifications();
+    }
+  }
+  async fetchNotifications(){
+    try{
+      const response = await fetch("http://localhost:8080/api/notifications/getLoggedUserNotifications",{
+        method: 'GET',
+        credentials: 'include'
+      });
+      if(response.ok){
+        this.notifications = await response.json();
+      }
+
+    }catch(error){
+
+    }
+  }
+  @HostListener('document:click')
+  closeNotifications() {
+    this.isNotificationOpen = false;
+  }
+
 
 
 

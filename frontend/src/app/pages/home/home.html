@@ -32,11 +32,32 @@
 
       <div class="sidebar-section">
         <div class="section-header">Ty <span>&rsaquo;</span></div>
+
         <div class="sidebar-item" (click)="goHistoryPage()">
           <label>Historia</label>
         </div>
+
         <div class="sidebar-item" (click)="goPlayListPage()">
           <label>Playlisty</label>
+        </div>
+
+        <div class="sidebar-item notification-anchor" (click)="openNotifications($event)">
+          <label>Powiadomienia</label>
+          <span class="badge" *ngIf="notifications.length > 0">{{notifications.length}}</span>
+
+          <div class="notification-window" *ngIf="isNotificationOpen" (click)="$event.stopPropagation()">
+            <div class="window-header">
+              Powiadomienia
+            </div>
+            <div class="window-content">
+              <div class="note-item" *ngFor="let note of notifications">
+                {{ note.content }}
+              </div>
+              <div class="empty-notes" *ngIf="notifications.length === 0">
+                Brak nowych powiadomień
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

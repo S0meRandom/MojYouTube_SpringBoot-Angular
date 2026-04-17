@@ -239,4 +239,59 @@ footer {
   transition: background-color 0.3s ease;
 
 }
+notification-anchor {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-window {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 300px;
+  background: white;
+  z-index: 9999;
+  display: block !important;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+  border: 1px solid #ccc;
+  color: black;
+}
+
+.window-header {
+  padding: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+.window-content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.note-item {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
+}
+
+.note-item:hover {
+  background: #f2f2f2;
+}
+
+.badge {
+  background: #cc0000;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 10px;
+  margin-left: 8px;
+}
+
+.empty-notes {
+  padding: 20px;
+  text-align: center;
+  color: #aaa;
+}
 
