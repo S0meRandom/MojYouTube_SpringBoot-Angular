@@ -130,6 +130,7 @@ export class Home implements AfterViewInit, OnInit{
       });
       if(response.ok){
         this.notifications = await response.json();
+        this.cdr.detectChanges();
       }
 
     }catch(error){

@@ -94,11 +94,11 @@ header {
   top: 56px;
   left: 0;
   z-index: 999;
-  overflow-y: auto;
   display:flex;
   flex-direction: column;
   height: 100%;
   min-height: calc(100vh - 56px);
+  overflow-y: auto;
 
 }
 nav{
@@ -140,11 +140,12 @@ nav{
   flex-direction: column;
 }
 footer {
+  flex-shrink: 0;
   width: 100%;
   background-color: #f8f9fa;
   border-top: 1px solid #ddd;
   padding: 20px 0;
-  margin-top: -120px;
+  margin-top:-120px;
 }
 .footer-div{
   display:flex;
@@ -239,18 +240,17 @@ footer {
   transition: background-color 0.3s ease;
 
 }
-notification-anchor {
+.notification-anchor {
   position: relative;
   cursor: pointer;
 }
 
 .notification-window {
-  position: absolute;
-  top: 0;
-  left: 100%;
+  position: fixed;
+  top: 300px;
+  left: 240px;
   width: 300px;
   background: white;
-  z-index: 9999;
   display: block !important;
   box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
   border: 1px solid #ccc;
