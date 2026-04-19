@@ -43,7 +43,7 @@
 
         <div class="sidebar-item notification-anchor" (click)="openNotifications($event)">
           <label>Powiadomienia</label>
-          <span class="badge" *ngIf="notifications.length > 0">{{notifications.length}}</span>
+          <span class="badge" *ngIf="readNotifications.length > 0">{{readNotifications.length}}</span>
 
           <div class="notification-window" *ngIf="isNotificationOpen" (click)="$event.stopPropagation()">
             <div class="window-header">
@@ -52,6 +52,8 @@
             <div class="window-content">
               <div class="note-item" *ngFor="let note of notifications">
                 {{ note.content }}
+                <p *ngIf=!note.isRead (click)="readNotification(note.id)">Odczytaj</p>
+                <p *ngIf="note.isRead">Odczytane</p>
               </div>
               <div class="empty-notes" *ngIf="notifications.length === 0">
                 Brak nowych powiadomień

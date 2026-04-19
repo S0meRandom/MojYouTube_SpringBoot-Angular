@@ -19,6 +19,7 @@ export class Home implements AfterViewInit, OnInit{
   searchQuery: string = '';
   isNotificationOpen = false;
   notifications: any[] = [];
+  readNotifications: any[] = [];
 
   getSafeThumbnailUrl(id: number): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(`http://localhost:8080/api/video/thumbnail/${id}`);
@@ -36,6 +37,7 @@ export class Home implements AfterViewInit, OnInit{
   ngOnInit(): void {
         this.fetchVideos();
         this.fetchUserData();
+        this.fetchNotifications().then(r => this.checkReadNotifications());
     }
 
 
@@ -118,9 +120,7 @@ export class Home implements AfterViewInit, OnInit{
   openNotifications(event:Event){
     event.stopPropagation();
     this.isNotificationOpen = !this.isNotificationOpen;
-    if(this.isNotificationOpen){
-      this.fetchNotifications();
-    }
+
   }
   async fetchNotifications(){
     try{
@@ -130,6 +130,30 @@ export class Home implements AfterViewInit, OnInit{
       });
       if(response.ok){
         this.notifications = await response.json();
+        this.cdr.detectChanges();
+      }
+
+    }catch(error){
+
+    }
+  }
+  checkReadNotifications(){
+    this.notifications.forEach((notification)=>{
+      if(notification.isRead === false){
+        this.readNotifications.push(notification);
+        this.cdr.detectChanges();
+      }
+
+    });
+
+  }
+  async readNotification(id:String){
+    try{
+      const response = await fetch(`http://localhost:8080/api/notifications/readNotification/${id}`,{
+        method:'PUT',
+        credentials: 'include'
+      });
+      if(response.ok){
         this.cdr.detectChanges();
       }
 
