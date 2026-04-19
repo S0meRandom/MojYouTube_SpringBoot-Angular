@@ -10,7 +10,7 @@ public class NotificationService {
     public Notification newCommentNotification(String videoName, String commenterName, AppUser receiver){
         Notification newCommentNotification = new Notification();
 
-        String commentContent = commenterName + " właśnie dodał komentarz do twojego filmiku"+ videoName;
+        String commentContent = commenterName + " właśnie dodał komentarz do twojego filmiku "+ videoName;
         newCommentNotification.setContent(commentContent);
         newCommentNotification.setUserId(String.valueOf(receiver.getId()));
 
@@ -19,7 +19,7 @@ public class NotificationService {
     public Notification newSubscriberNotification(AppUser receiver,String subscriberName){
         Notification newSubscriberNotification = new Notification();
 
-        String commentContent = subscriberName + " właśnie zasubskrybował twój kanał!";
+        String commentContent = subscriberName + " właśnie zasubskrybował twój kanał!   ";
         newSubscriberNotification.setUserId(String.valueOf(receiver.getId()));
         newSubscriberNotification.setContent(commentContent);
         return newSubscriberNotification;

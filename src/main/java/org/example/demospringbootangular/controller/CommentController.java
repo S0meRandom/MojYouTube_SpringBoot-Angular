@@ -4,8 +4,10 @@ import org.example.demospringbootangular.Service.CommentService;
 import org.example.demospringbootangular.Service.NotificationService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Comment;
+import org.example.demospringbootangular.model.Notification;
 import org.example.demospringbootangular.model.Video;
 import org.example.demospringbootangular.repository.CommentRepository;
+import org.example.demospringbootangular.repository.NotificationRepository;
 import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
     @PostMapping("/create/{id}")
     public void createComment(@RequestBody Map<String,String> content, @PathVariable("id") Long video_id, Principal principal){
         String commentContent = content.get("content");
@@ -50,8 +55,8 @@ public class CommentController {
         AppUser videoCreator = video.getAuthor();
         String videoName = video.getTitle();
 
-        notificationService.newCommentNotification(videoName,commenter.getUsername(),videoCreator);
-
+        Notification newNotification = notificationService.newCommentNotification(videoName,commenter.getUsername(),videoCreator);
+        notificationRepository.save(newNotification);
 
     }
     @GetMapping("/getVideoComments/{id}")
