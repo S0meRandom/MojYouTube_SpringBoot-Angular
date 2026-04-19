@@ -16,5 +16,7 @@ export class Sidebar {
   goLikedVideosPage(){
     this.router.navigate(['likedVideos']);
   }
-  logout(){}
+  goSubscriberPage(){
+    this.router.navigate(['subscribersPage']);
+  }
 }

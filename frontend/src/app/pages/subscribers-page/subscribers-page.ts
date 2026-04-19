@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Header} from '../../components/header/header';
 import {NgForOf, NgIf} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-subscribers-page',
@@ -13,12 +14,14 @@ import {NgForOf, NgIf} from '@angular/common';
   styleUrl: './subscribers-page.css',
 })
 export class SubscribersPage implements OnInit{
+  userData: any = null;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,private router: Router) {
   }
   userSubscriptions:any[] = [];
-    ngOnInit(): void {
-      this.getUserSubscriptions();
+    async ngOnInit() {
+      await this.getUserSubscriptions();
+      await this.fetchUserData();
     }
     async getUserSubscriptions(){
       try{
@@ -35,5 +38,23 @@ export class SubscribersPage implements OnInit{
 
       }
     }
+  async fetchUserData(){
+    try{
+      const response = await fetch("http://localhost:8080/api/users/me",{
+        method: 'GET',
+        credentials: 'include'
+      });
+      if(response.ok){
+        this.userData = await response.json();
+        this.cdr.detectChanges();
+      }
+
+    }catch(error){
+
+    }
+  }
+  goSubscriberChannel(id:string){
+      this.router.navigate(['channelPage',id]);
+  }
 
 }

@@ -3,7 +3,7 @@
   display: flex;
   gap: 20px;
 }
-.likesVideosInfo{
+.subscribersInfo{
   border-radius: 16px;
   width: 400px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,7 +15,7 @@
   background-color: #ffffff;
 
 }
-.likesVideosInfo img{
+.subscribersInfo img{
   height: 300px;
   width: 100%;
   border-radius: 16px;
@@ -26,7 +26,7 @@
   padding: 12px;
 
 }
-.videosContainer{
+.subscribersContainer{
   width: 800px;
   height: 300px;
   display: flex;
@@ -44,21 +44,36 @@
   border: 1px solid #e0e0e0;
   display:flex;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
   background-color: #ffffff;
   gap: 16px;
   transition: background-color 0.2s ease;
 }
-.video-card:hover{
-  cursor: pointer;
+
+
+.subscriber-info{
+  display: flex;
+  padding: 12px 12px;
+  gap: 16px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  overflow:hidden;
+  border:none;
+  outline:none;
+  margin-left: 10px;
+  height: 40px;
+  max-width: 100%;
+  min-width: 500px;
+  border-radius:16px;
+  z-index:999;
+  cursor:pointer;
+  margin-top: 15px;
+
+}
+.subscriber-info:hover,.subscriber-info label:hover{
   background-color: #f2f2f2;
+  cursor: pointer;
+
 }
 
-.video-info{
-  display: flex;
-  padding: 12px;
-  gap: 16px;
-}
 .video-thumbnail img{
   height: 300px;
   width: 400px;

@@ -1,28 +1,22 @@
 <app-header></app-header>
 <main>
   <div class="contentContainer">
-    <div class="likesVideosInfo">
-      <div class="thumbnail">
-        <img  alt="likedPlaylistThumbnail">
-      </div>
+    <div class="subscribersInfo">
       <div class="info">
-        <label>Użytkownik: </label>
+        <label>Użytkownik: {{userData.username}} </label>
         <p>Zasubskrybowane kanały: {{userSubscriptions.length}} </p>
       </div>
 
     </div>
-    <div class="videosContainer">
-      <div class="video-card">
-        <div class="video-info">
-          <div class="video-thumbnail">
-            <img alt="videoThumbnail">
-          </div>
-          <div class="video-meta">
-
-          </div>
+    <div class="subscribersContainer">
+      <div class="subscriber-card">
+        <div class="subscriber-info" *ngFor="let subscriber of userSubscriptions" (click)="goSubscriberChannel(subscriber.owner.id)">
+          <label>{{subscriber.name}}</label>
+          <label>Subskrybenci: {{subscriber.subscribers}}</label>
+          <label>Suma wyświetleń: {{subscriber.sumViews}}</label>
+          <label>Kraj pochodzenia: {{subscriber.country}}</label>
         </div>
       </div>
-
     </div>
   </div>
 </main>
