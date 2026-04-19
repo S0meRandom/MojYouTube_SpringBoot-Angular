@@ -13,6 +13,7 @@ public class NotificationService {
         String commentContent = commenterName + " właśnie dodał komentarz do twojego filmiku "+ videoName;
         newCommentNotification.setContent(commentContent);
         newCommentNotification.setUserId(String.valueOf(receiver.getId()));
+        newCommentNotification.setIsRead(false);
 
         return newCommentNotification;
     }
@@ -22,6 +23,7 @@ public class NotificationService {
         String commentContent = subscriberName + " właśnie zasubskrybował twój kanał!   ";
         newSubscriberNotification.setUserId(String.valueOf(receiver.getId()));
         newSubscriberNotification.setContent(commentContent);
+        newSubscriberNotification.setIsRead(false);
         return newSubscriberNotification;
     }
 }

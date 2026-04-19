@@ -35,4 +35,7 @@ public class Notification {
     public void setIsRead(Boolean newIsRead){
         this.isRead = newIsRead;
     }
+    public void setId(String newId){
+        this.id = newId;
+    }
 }

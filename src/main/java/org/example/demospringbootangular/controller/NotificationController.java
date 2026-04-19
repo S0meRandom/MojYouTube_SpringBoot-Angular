@@ -7,9 +7,7 @@ import org.example.demospringbootangular.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,5 +28,15 @@ public class NotificationController {
         AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
         List<Notification> userNotifications = notificationRepository.findByUserId(String.valueOf(user.getId()));
         return ResponseEntity.ok(userNotifications);
+    }
+    @PutMapping("/readNotification/{id}")
+    public ResponseEntity<?> readNotification(@PathVariable String id){
+        Notification notificationToRead = notificationRepository.findById(id).orElseThrow();
+        notificationToRead.setIsRead(true);
+        notificationRepository.save(notificationToRead);
+        System.out.println("Ustawawiam na :" + notificationToRead.getIsRead());
+        return ResponseEntity.ok().build();
+
+
     }
 }
