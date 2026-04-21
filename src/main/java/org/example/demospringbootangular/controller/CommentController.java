@@ -48,32 +48,18 @@ public class CommentController {
     public void createComment(@RequestBody Map<String,String> content, @PathVariable("id") Long video_id, Principal principal){
         String commentContent = content.get("content");
         AppUser commenter = userRepository.findByUsername(principal.getName()).orElseThrow();
-
-        commentService.createComment(commentContent,video_id,commenter);
-
         Video video = videoRepository.findByid(video_id).orElseThrow();
         AppUser videoCreator = video.getAuthor();
         String videoName = video.getTitle();
 
+        commentService.createComment(commentContent,video_id,commenter);
         Notification newNotification = notificationService.newCommentNotification(videoName,commenter.getUsername(),videoCreator);
         notificationRepository.save(newNotification);
 
     }
     @GetMapping("/getVideoComments/{id}")
     public ResponseEntity<?> getVideoComments(@PathVariable Long id){
-        List<Comment> videoComments = commentRepository.findByVideoId(id);
-        Set<Long> userIds = videoComments.stream().map(Comment::getUser_id).collect(Collectors.toSet());
-        List<AppUser> appUsers = userRepository.findAllById(userIds);
-        Map<Long, AppUser> userLookup = appUsers.stream().collect(Collectors.toMap(AppUser::getId,u->u));
-
-        List<Map<String, Object>> finalData = videoComments.stream().map(comment -> {
-            Map<String,Object> box = new HashMap<>();
-            box.put("comment",comment);
-            AppUser author = userLookup.get(comment.getUser_id());
-            box.put("author",author);
-            return box;
-
-        }).toList();
+        List<Map<String, Object>> finalData = commentService.getVideoComments(id);
         return ResponseEntity.ok(finalData);
 
     }

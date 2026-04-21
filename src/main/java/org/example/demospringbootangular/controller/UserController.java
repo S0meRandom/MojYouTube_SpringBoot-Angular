@@ -1,6 +1,7 @@
 package org.example.demospringbootangular.controller;
 
 import jakarta.transaction.Transactional;
+import org.example.demospringbootangular.Service.UserService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Channel;
 import org.example.demospringbootangular.model.RegistrationDTO;
@@ -30,23 +31,14 @@ public class UserController {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
+    @Autowired
+    private UserService userService;
 
 
     @PostMapping("/register")
     @Transactional
     public ResponseEntity<?> registerUser(@RequestBody RegistrationDTO dto){
-
-        AppUser user = new AppUser();
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userRepository.save(user);
-
-        Channel channel = new Channel();
-        channel.setName(dto.getChannelName());
-        channel.setOwner(user);
-        channelRepository.save(channel);
-
+        userService.registerUser(dto);
         return ResponseEntity.ok().build();
 
     }
@@ -59,7 +51,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
     @GetMapping("/me/checkSubscribtion/{channelId}")
-    public ResponseEntity<Boolean> checkUserSubscribtion(Principal principal,@PathVariable Long channelId){
+    public ResponseEntity<Boolean> checkUserSubscription(Principal principal, @PathVariable Long channelId){
         AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
         Channel channel = channelRepository.findByid(channelId).orElseThrow();
         Optional<Subscription> subscription = subscriptionRepository.findByChannelAndSubscriber(channel,user);

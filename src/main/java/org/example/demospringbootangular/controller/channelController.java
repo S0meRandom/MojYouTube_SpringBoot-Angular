@@ -38,11 +38,8 @@ public class channelController {
             return ResponseEntity.notFound().build();
         }
         AppUser user = userRepository.findByUsername(principal.getName()).orElseThrow();
-        Channel newChannel = new Channel();
-        newChannel.setName(channelName);
-        newChannel.setOwner(user);
-        channelRepository.save(newChannel);
 
+        channelService.createNewChannel(channelName,user);
         return ResponseEntity.ok().build();
     };
     @GetMapping("/{id}")
@@ -68,18 +65,9 @@ public class channelController {
 
     };
     @PutMapping("/editChannelInfo")
-    public ResponseEntity<?> editChannelInfo(@RequestBody Map<String,String> newChannelBody, Principal principal){
-        String newChannelName = newChannelBody.get("newChannelName");
-        String newChannelCountry = newChannelBody.get("newChannelCountry");
-        String newChannelDescription = newChannelBody.get("newChannelDescription");
-
+    public ResponseEntity<?> editLoggedUserChannelInfo(@RequestBody Map<String,String> newChannelBody, Principal principal){
         AppUser channelOwner = userRepository.findByUsername(principal.getName()).orElseThrow();
-        Channel ownersChannel = channelRepository.findByOwner(channelOwner).orElseThrow();
-        ownersChannel.setName(newChannelName);
-        ownersChannel.setCountry(newChannelCountry);
-        ownersChannel.setDescription(newChannelDescription);
-        channelRepository.save(ownersChannel);
-
+        channelService.editChannelInfo(channelOwner,newChannelBody);
         return ResponseEntity.ok().build();
 
     }

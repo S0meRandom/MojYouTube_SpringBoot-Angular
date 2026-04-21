@@ -17,4 +17,6 @@ public interface VideoRepository extends JpaRepository<Video,Long> {
     List<Video> findBychannel(Channel channel);
     @Query(value = "SELECT * FROM videos WHERE title % :query ORDER BY similarity(title, :query) DESC", nativeQuery = true)
     List<Video> searchVideos(@Param("query") String query);
+    @Query("SELECT r.channel FROM Video r WHERE r.id = :id")
+    Channel findChannelByVideoId(long id);
 }

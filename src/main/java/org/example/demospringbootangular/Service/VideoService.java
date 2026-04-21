@@ -1,22 +1,30 @@
 package org.example.demospringbootangular.Service;
 
 import jakarta.transaction.Transactional;
-import org.example.demospringbootangular.model.AppUser;
-import org.example.demospringbootangular.model.Reaction;
-import org.example.demospringbootangular.model.ReactionType;
-import org.example.demospringbootangular.model.Video;
+import org.example.demospringbootangular.model.*;
+import org.example.demospringbootangular.repository.ChannelRepository;
 import org.example.demospringbootangular.repository.ReactionRepository;
+import org.example.demospringbootangular.repository.UserRepository;
 import org.example.demospringbootangular.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,7 +37,34 @@ public class VideoService {
     @Autowired
     private VideoRepository videoRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
+    @Autowired
+    private ChannelRepository channelRepository;
+
+
+    @Autowired
+    private ChannelService channelService;
+
+    @Transactional
+    public void saveVideo(MultipartFile videoFile,
+                          MultipartFile thumbnailFile,
+                          String title,
+                          String description,
+                          Principal principal){
+        AppUser currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
+        Channel channel = channelRepository.findByOwner(currentUser).orElseThrow();
+
+        Video video = new Video();
+        video.setTitle(title);
+        handleVideo_Thumbnail(videoFile,thumbnailFile, video);
+        video.setAuthor(currentUser);
+        video.setCreationDate(LocalDateTime.now());
+        video.setDescription(description);
+        video.setChannel(channel);
+
+    }
     @Transactional
     public void setReaction(Long videoId, AppUser user, ReactionType newType) {
         Optional<Reaction> existingReaction = reactionRepository.findByVideoIdAndUserId(videoId, user.getId());
@@ -122,5 +157,56 @@ public class VideoService {
         }catch(IOException io){
             throw new RuntimeException();
         }
+    }
+    @Transactional
+    public UrlResource getVideoThumbnail(long videoId) {
+        Video video = videoRepository.findByid(videoId).orElseThrow();
+
+        UrlResource file = null;
+        try {
+            String cleanPath = video.getThumbnailUrl();
+            if (cleanPath.startsWith("/")) {
+                cleanPath = cleanPath.substring(1);
+            }
+            Path path = Paths.get("").toAbsolutePath().resolve(cleanPath);
+            file = new UrlResource(path.toUri());
+        } catch (Exception ignored) {
+        }
+        return file;
+    }
+    public StreamingResponseBody getVideoPlay(long videoId) {
+        Video video = videoRepository.findByid(videoId).orElseThrow();
+
+        StreamingResponseBody responseBody = null;
+        try {
+
+            String cleanPath = video.getUrl();
+            if (cleanPath.startsWith("/")) {
+                cleanPath = cleanPath.substring(1);
+            }
+            Path path = Paths.get("").toAbsolutePath().resolve(cleanPath);
+            File file = path.toFile();
+
+            responseBody = outputStream -> {
+                try (InputStream inputStream = new FileInputStream(file)) {
+                    byte[] buffer = new byte[8192];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    outputStream.flush();
+                }
+            };
+        } catch (Exception e) {
+        }
+
+        return responseBody;
+    }
+    public void updateViews(long videoId){
+        Video video = videoRepository.findByid(videoId).orElseThrow();
+        Channel channel = videoRepository.findChannelByVideoId(videoId);
+        channelService.updateChannelViews(channel);
+        video.setViews(video.getViews()+1);
+        videoRepository.save(video);
     }
 }

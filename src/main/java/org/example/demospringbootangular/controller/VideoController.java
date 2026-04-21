@@ -1,5 +1,6 @@
 package org.example.demospringbootangular.controller;
 
+import org.example.demospringbootangular.Service.ChannelService;
 import org.example.demospringbootangular.Service.VideoService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Channel;
@@ -43,27 +44,21 @@ public class VideoController {
     @Autowired
     private VideoService videoService;
 
+    @Autowired
+    private ChannelService channelService;
+
     @PostMapping("/upload")
-    public Video saveVideo(@RequestParam("videoFile") MultipartFile videoFile,
+    public ResponseEntity<?> saveVideo(@RequestParam("videoFile") MultipartFile videoFile,
                            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
                            @RequestParam("title") String title,
                            @RequestParam("description") String description,Principal principal){
-        AppUser currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
-        Channel channel = channelRepository.findByOwner(currentUser).orElseThrow();
-
-        Video video = new Video();
-        video.setTitle(title);
-        videoService.handleVideo_Thumbnail(videoFile,thumbnailFile, video);
-        video.setAuthor(currentUser);
-        video.setCreationDate(LocalDateTime.now());
-        video.setDescription(description);
-        video.setChannel(channel);
-        return videoRepository.save(video);
+        videoService.saveVideo(videoFile,thumbnailFile,title,description,principal);
+        return ResponseEntity.ok().build();
     }
 
         @GetMapping
-        public List<Video> getAllVideos(){
-            return videoRepository.findAll();
+        public ResponseEntity<?> getAllVideos(){
+            return ResponseEntity.ok(videoRepository.findAll());
         }
 
         @GetMapping("/{id}")
@@ -75,68 +70,25 @@ public class VideoController {
 
         @GetMapping("/thumbnail/{id}")
         public ResponseEntity<?> getVideoThumbnail(@PathVariable Long id){
-            Video video = videoRepository.findByid(id).orElseThrow();
-
-            try{
-                String cleanPath = video.getThumbnailUrl();
-                if (cleanPath.startsWith("/")) {
-                    cleanPath = cleanPath.substring(1);
-                }
-                Path path = Paths.get("").toAbsolutePath().resolve(cleanPath);
-                UrlResource file = new UrlResource(path.toUri());
-
-                if (file.exists() && file.isReadable()) {
-                    return ResponseEntity.ok()
-                            .contentType(MediaType.IMAGE_JPEG)
-                            .body(file);
-                } else {
-                    System.out.println("BŁĄD: Plik nie istnieje pod ścieżką: " + path.toAbsolutePath());
-                    return ResponseEntity.notFound().build();
-                }
-            }catch(Exception e){
+            UrlResource file = videoService.getVideoThumbnail(id);
+            if(file.exists() && file.isReadable()){
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(file);
+            }else{
                 return ResponseEntity.notFound().build();
-
             }
+
 
         }
         @GetMapping("/videoPlay/{id}")
         public ResponseEntity<StreamingResponseBody> getVideoPlay(@PathVariable Long id, @RequestHeader HttpHeaders headers){
-            Video video = videoRepository.findByid(id).orElseThrow();
-
-            try{
-
-                String cleanPath = video.getUrl();
-                if (cleanPath.startsWith("/")) {
-                    cleanPath = cleanPath.substring(1);
-                }
-                Path path = Paths.get("").toAbsolutePath().resolve(cleanPath);
-                File file = path.toFile();
-
-                StreamingResponseBody responseBody = outputStream -> {
-                    try(InputStream inputStream = new FileInputStream(file)){
-                        byte[] buffer = new byte[8192];
-                        int bytesRead;
-                        while((bytesRead=inputStream.read(buffer)) != -1){
-                            outputStream.write(buffer,0,bytesRead);
-                        }
-                        outputStream.flush();
-                    }
-                };
+            StreamingResponseBody responseBody = videoService.getVideoPlay(id);
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename=\""+file.getName()+"\"")
-                        .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()))
                         .contentType(MediaType.parseMediaType("video/mp4"))
                         .body(responseBody);
-            }catch(Exception e){
-                return ResponseEntity.internalServerError().build();
-
-            }
         }
         @PutMapping("/{id}")
         public ResponseEntity<?> updateViews(@PathVariable long id){
-            Video video = videoRepository.findByid(id).orElseThrow();
-            video.setViews(video.getViews()+1);
-            videoRepository.save(video);
+            videoService.updateViews(id);
             return ResponseEntity.ok().build();
         }
 
@@ -163,12 +115,7 @@ public class VideoController {
 
         @GetMapping("/searchVideos")
         public ResponseEntity<?> searchVideos(@RequestParam(required = false) String query){
-            List<Video> searchedVideos = new ArrayList<>();
-            if(query==null || query.isBlank()){
-                searchedVideos = videoRepository.findAll();
-                return ResponseEntity.ok(searchedVideos);
-            }
-            searchedVideos = videoRepository.searchVideos(query);
+            List<Video> searchedVideos = videoService.searchVideos(query);
             return ResponseEntity.ok(searchedVideos);
         }
 }

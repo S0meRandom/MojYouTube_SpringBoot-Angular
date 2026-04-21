@@ -2,6 +2,7 @@ package org.example.demospringbootangular.controller;
 
 import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
+import org.example.demospringbootangular.Service.PlaylistService;
 import org.example.demospringbootangular.model.AppUser;
 import org.example.demospringbootangular.model.Playlist;
 import org.example.demospringbootangular.model.Video;
@@ -27,6 +28,9 @@ public class PlayListController {
 
     @Autowired
     private VideoRepository videoRepository;
+
+    @Autowired
+    private PlaylistService playlistService;
 
     @GetMapping("/loggerUserPlaylists")
     public ResponseEntity<?> getUserPlaylists(Principal principal){
@@ -57,11 +61,7 @@ public class PlayListController {
     @PostMapping
     public ResponseEntity<?> createNewPlaylist(Principal principal,@RequestBody String playlistName){
         AppUser playlistCreator = userRepository.findByUsername(principal.getName()).orElseThrow();
-        Playlist newPlaylist = new Playlist();
-        newPlaylist.setPlaylistCreator(playlistCreator);
-        newPlaylist.setPlaylistName(playlistName);
-        playlistRepository.save(newPlaylist);
-
+        playlistService.createNewPlaylist(playlistCreator,playlistName);
         return ResponseEntity.ok().build();
 
     }
@@ -74,10 +74,7 @@ public class PlayListController {
     @PutMapping("/addToPlaylist/{videoId}/{playlistId}")
     @Transactional
     public ResponseEntity<?> addVideoToPlaylist(@PathVariable long videoId,@PathVariable long playlistId){
-        Video selectedVideo = videoRepository.findByid(videoId).orElseThrow();
-        Playlist selectedPlaylist = playlistRepository.findById(playlistId).orElseThrow();
-        selectedPlaylist.getPlaylistVideos().add(selectedVideo);
-        playlistRepository.save(selectedPlaylist);
+        playlistService.addVideoToPlaylist(videoId,playlistId);
         return ResponseEntity.ok().build();
 
     }
