@@ -3,6 +3,8 @@ package org.example.demospringbootangular.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class AppUser {
@@ -15,6 +17,8 @@ public class AppUser {
     @JsonIgnore
     @Column(nullable=false)
     private String password;
+
+    private long userHistoryPlaylistId;
 
     @Column(unique=true,nullable=false)
     private String email;
@@ -42,5 +46,11 @@ public class AppUser {
     }
     public void setPassword(String newPassword){
         this.password = newPassword;
+    }
+    public long getUserHistoryPlaylistId(){
+        return userHistoryPlaylistId;
+    }
+    public void setUserHistoryPlaylistId(long newId){
+        this.userHistoryPlaylistId = newId;
     }
 }
