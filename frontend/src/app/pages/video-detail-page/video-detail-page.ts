@@ -38,6 +38,7 @@ export class VideoDetailPage implements OnInit,OnDestroy{
   isSubscribed:boolean = false;
   videoComments: any[] = [];
   addCommentText: String = '';
+  isProcessingSub:boolean = false;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -50,17 +51,18 @@ export class VideoDetailPage implements OnInit,OnDestroy{
     });
 
   }
-  private setupVideoPage(id: string) {
-
+  async setupVideoPage(id: string) {
     const rawUrl = `http://localhost:8080/api/video/videoPlay/${id}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(rawUrl);
-    this.fetchVideoData(id).then(r => this.checkSubscribtion(this.videoData.channel.id));
-    this.fetchSidebarVideos();
-    this.handleViewUpdate();
-    this.handleViewUpdate();
-    this.getVideoComments(this.videoId);
 
+    await this.fetchVideoData(id);
+    if (this.videoData?.channel?.id) {
+      await this.checkSubscribtion(this.videoData.channel.id);
+    }
 
+    await this.fetchSidebarVideos();
+    this.handleViewUpdate();
+    await this.getVideoComments(this.videoId);
   }
   ngOnDestroy(){
     if(this.viewTimeout){
@@ -97,22 +99,26 @@ export class VideoDetailPage implements OnInit,OnDestroy{
 
     }
   }
-  async subscribeOrUnsubscribe(channelId: undefined){
-    try{
-      const response = await fetch(`http://localhost:8080/api/channel/subscribeOrUnsubscribe/${channelId}`,{
+  async subscribeOrUnsubscribe(channelId: string) {
+    if (this.isProcessingSub) return;
+
+    this.isProcessingSub = true;
+    try {
+      const response = await fetch(`http://localhost:8080/api/channel/subscribeOrUnsubscribe/${channelId}`, {
         method: 'PUT',
         credentials: 'include'
       });
-      if(response.ok){
-        this.isSubscribed = !this.isSubscribed;
-        this.fetchVideoData(this.videoId);
 
+      if (response.ok) {
+        await this.checkSubscribtion(channelId);
+        await this.fetchVideoData(this.videoId);
       }
-
-    }catch(error){
-
+    } catch (error) {
+      console.error("Błąd subskrypcji", error);
+    } finally {
+      this.isProcessingSub = false;
+      this.cdr.detectChanges();
     }
-
   }
 
   async fetchSidebarVideos(){

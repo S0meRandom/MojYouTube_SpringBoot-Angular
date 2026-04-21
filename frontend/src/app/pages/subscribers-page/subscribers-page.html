@@ -1,22 +1,37 @@
 <app-header></app-header>
-<main>
-  <div class="contentContainer">
-    <div class="subscribersInfo">
-      <div class="info">
-        <label>Użytkownik: {{userData.username}} </label>
-        <p>Zasubskrybowane kanały: {{userSubscriptions.length}} </p>
-      </div>
+<main class="content"> <div class="contentContainer">
 
+  <aside class="subscribersInfo">
+    <div class="profile-header">
+      <div class="avatar-large">{{userData.username?.charAt(0)}}</div>
+      <h2>{{userData.username}}</h2>
     </div>
-    <div class="subscribersContainer">
-      <div class="subscriber-card">
-        <div class="subscriber-info" *ngFor="let subscriber of userSubscriptions" (click)="goSubscriberChannel(subscriber.owner.id)">
-          <label>{{subscriber.name}}</label>
-          <label>Subskrybenci: {{subscriber.subscribers}}</label>
-          <label>Suma wyświetleń: {{subscriber.sumViews}}</label>
-          <label>Kraj pochodzenia: {{subscriber.country}}</label>
+    <div class="info-stats">
+      <div class="stat-item">
+        <span class="stat-label">Zasubskrybowane:</span>
+        <span class="stat-value">{{userSubscriptions.length}}</span>
+      </div>
+    </div>
+  </aside>
+
+  <section class="subscribersList">
+    <h3 class="section-title">Twoje subskrypcje</h3>
+    <div class="sub-grid">
+      <div class="subscriber-row" *ngFor="let subscriber of userSubscriptions" (click)="goSubscriberChannel(subscriber.owner.id)">
+        <div class="sub-main-info">
+          <div class="sub-avatar">{{subscriber.name?.charAt(0)}}</div>
+          <div class="sub-details">
+            <label class="sub-name">{{subscriber.name}}</label>
+            <label class="sub-count">{{subscriber.subscribers}} subskrybentów</label>
+          </div>
+        </div>
+        <div class="sub-stats-extra">
+          <span class="tag">{{subscriber.country}}</span>
+          <span class="views-count">👁 {{subscriber.sumViews}}</span>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+</div>
 </main>
