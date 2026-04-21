@@ -2,10 +2,7 @@ package org.example.demospringbootangular.Service;
 
 import jakarta.transaction.Transactional;
 import org.example.demospringbootangular.model.*;
-import org.example.demospringbootangular.repository.ChannelRepository;
-import org.example.demospringbootangular.repository.ReactionRepository;
-import org.example.demospringbootangular.repository.UserRepository;
-import org.example.demospringbootangular.repository.VideoRepository;
+import org.example.demospringbootangular.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -47,6 +44,12 @@ public class VideoService {
     @Autowired
     private ChannelService channelService;
 
+    @Autowired
+    private PlayListRepository playListRepository;
+
+    @Autowired
+    private PlaylistService playlistService;
+
     @Transactional
     public void saveVideo(MultipartFile videoFile,
                           MultipartFile thumbnailFile,
@@ -63,6 +66,7 @@ public class VideoService {
         video.setCreationDate(LocalDateTime.now());
         video.setDescription(description);
         video.setChannel(channel);
+        videoRepository.save(video);
 
     }
     @Transactional
@@ -205,6 +209,9 @@ public class VideoService {
     public void updateViews(long videoId){
         Video video = videoRepository.findByid(videoId).orElseThrow();
         Channel channel = videoRepository.findChannelByVideoId(videoId);
+        AppUser user = channelRepository.findOwnerByChannelId(channel.getId()).orElseThrow();
+        Playlist userHistory = playListRepository.findById(user.getUserHistoryPlaylistId()).orElseThrow();
+        playlistService.addVideoToPlaylist(videoId,userHistory.getId());
         channelService.updateChannelViews(channel);
         video.setViews(video.getViews()+1);
         videoRepository.save(video);
