@@ -9,23 +9,27 @@
         <div class="form-group">
           <label>Nazwa Użytkownika</label>
           <input type="text" required name="username"[(ngModel)]="userData.username">
+          <p *ngIf="showUsernameError">Proszę wpisać poprawną nazwę użytkownika!</p>
         </div>
       </div>
       <div class="row">
         <div class="form-group">
           <label>Nazwa Kanału</label>
           <input type="text" required name="channelName"[(ngModel)]="userData.channelName">
+          <p *ngIf="showChannelNameErorr">Proszę wpisać poprawną nazwę kanału!</p>
         </div>
       </div>
 
       <div class="form-group">
         <label>Email</label>
         <input type="email" name="email"placeholder="przyklad@email.com" required [(ngModel)]="userData.email">
+        <p *ngIf="showEmailError">Proszę wpisać poprawny email</p>
       </div>
 
       <div class="form-group">
         <label>Hasło</label>
         <input type="password" name="password"placeholder="Min. 8 znaków" required [(ngModel)]="userData.password">
+        <p *ngIf="showPasswordError">Hasło musi mieć minimum 8 znaków!</p>
       </div>
       <button type="submit" class="reg-btn">Zarejestruj się</button>
 

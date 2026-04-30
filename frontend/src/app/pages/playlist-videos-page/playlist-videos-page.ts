@@ -17,6 +17,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class PlaylistVideosPage implements OnInit,OnDestroy{
   constructor(private route: ActivatedRoute,private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) {
   }
+  videoComments: any[] = [];
+  addCommentText: String = '';
 
   ngOnDestroy(): void {
     if(this.viewTimeout){
@@ -91,6 +93,41 @@ export class PlaylistVideosPage implements OnInit,OnDestroy{
     this.viewTimeout = setTimeout(()=>{
       this.updateView(id);
     },10000);
+  }
+  async getVideoComments(id: string){
+    try{
+      const response = await fetch(`http://localhost:8080/api/comments/getVideoComments/${id}`,{
+        method:'GET'
+      });
+      if(response.ok){
+        this.videoComments = await response.json();
+        this.cdr.detectChanges();
+      }
+
+    }catch(error){
+
+    }
+  }
+  async addComment(id:String){
+    const commentBody = {
+      content: this.addCommentText,
+    };
+
+    try{
+      const response = await fetch(`http://localhost:8080/api/comments/create/${id}`,{
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(commentBody),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if(response.ok){
+        this.addCommentText = '';
+      }
+    }catch(error){
+
+    }
   }
 
 }

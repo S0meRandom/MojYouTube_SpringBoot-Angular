@@ -203,6 +203,7 @@ footer {
   display:flex;
   flex-direction: column;
   width: 320px;
+  max-height: 320px;
 
 }
 
